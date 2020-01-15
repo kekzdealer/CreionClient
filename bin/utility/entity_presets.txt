@@ -1,0 +1,93 @@
+CREATE TABLE templates(
+	template_id INT PRIMARY KEY,
+	human_readable_name CHAR
+);
+
+CREATE TABLE template_component_mapping(
+	template_id INT,
+	component_id INT
+);
+ 
+CREATE TABLE components(
+	component_id INT PRIMARY KEY,
+	human_readable_name CHAR,
+	table_name CHAR
+);
+  
+CREATE TABLE entities(
+	entity_id INT PRIMARY KEY,
+	human_readable_name CHAR
+);
+
+CREATE TABLE entity_component_mapping(
+	entity_id INT,
+	component_id INT,
+);
+
+CREATE TABLE component_data_position(
+	component_data_id INT PRIMARY KEY,
+	x_position FLOAT,
+	y_position FLOAT,
+);
+
+CREATE TABLE component_data_status(
+	component_data_id INT PRIMARY KEY,
+	level INT,
+	exp INT,
+	health INT,
+	vitality INT,
+	intelligence INT
+);
+
+CREATE TABLE component_inventory(
+	component_data_id INT PRIMARY KEY,
+	inventory_id INT
+);
+
+CREATE TABLE component_template_position(
+	template_id INT,
+	x_position FLOAT,
+	y_position FLOAT
+);
+
+// ITEM TABLES
+
+CREATE TABLE items(
+	item_id INT PRIMARY KEY,
+	human_readable_name CHAR
+);
+
+CREATE TABLE inventory(
+	inventory_id INT,
+	item_id INT
+);
+
+
+
+
+
+
+
+
+
+
+
+INSERT INTO templates VALUES(0, "human");
+INSERT INTO templates VALUES(1, "duck");
+
+INSERT INTO template_component_mapping VALUES(0, 0);
+INSERT INTO template_component_mapping VALUES(0, 1);
+INSERT INTO template_component_mapping VALUES(1, 0);
+INSERT INTO template_component_mapping VALUES(1, 1);
+
+INSERT INTO components VALUES(0, "position");
+INSERT INTO components VALUES(1, "health");
+
+
+Position (float x, float y)
+Inventory (INT entity_id, INT inventory_id)
+Status (INT level, INT exp, INT health, INT strength, INT vitality, INT intelligence)
+
+req_exp = 10 + (0.3 * x²)
+max_hp = 20 + (vit * 5)
+fireball_atk = 5 + (3 * int)

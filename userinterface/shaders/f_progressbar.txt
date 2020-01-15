@@ -1,0 +1,29 @@
+#version 330 core
+
+in vec2 pass_texCoords;
+
+out vec4 out_Color;
+
+uniform sampler2D diffuse_b;
+uniform sampler2D diffuse_f;
+uniform float progress;
+uniform float borderWidth;
+
+void main(){
+	
+	if(pass_texCoords.x <= borderWidth || pass_texCoords.x > (1.0 - borderWidth)) {
+		// left and right borders
+		out_Color = vec4(0.0, 0.0, 0.0, 1.0);
+	} else if(pass_texCoords.y <= borderWidth || pass_texCoords.y > (1.0 - borderWidth)) {
+		// top and bottom borders
+		out_Color = vec4(0.0, 0.0, 0.0, 1.0);
+	} else {
+		// progress bar textures
+		if(pass_texCoords.x <= progress) {	
+			out_Color = texture(diffuse_f, pass_texCoords);
+		} else {
+			out_Color = texture(diffuse_b, pass_texCoords);
+		}
+	}
+
+}
