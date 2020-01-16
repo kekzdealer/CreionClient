@@ -10,6 +10,7 @@ import org.lwjgl.opengl.GL11C;
 import org.lwjgl.opengl.GL12C;
 import org.lwjgl.stb.STBImage;
 
+@Deprecated
 public class TextureFactory {
 	
 	private static final TextureFactory instance = new TextureFactory();

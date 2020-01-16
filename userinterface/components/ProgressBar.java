@@ -11,7 +11,6 @@ public class ProgressBar extends Component {
 	private static final String TEXTURE_BACKGROUND = "progressbar_background";
 	private static final String TEXTURE_FOREGROUND = "progressbar_foreground";
 	
-	private float borderWidth = 0.1f;
 	private float progress = 0.0f;
 	private float progressMax = 100.0f;
 	
@@ -43,16 +42,6 @@ public class ProgressBar extends Component {
 			super.renderDataCache = data;
 			return super.renderDataCache;
 		}
-	}
-	
-	public ProgressBar setBorderWidth(float borderWidth) {
-		this.borderWidth = borderWidth;
-		super.markDirty();
-		return this;
-	}
-	
-	public float getBorderWidth() {
-		return borderWidth;
 	}
 	
 	public ProgressBar setProgress(float progress, float progressMax) {

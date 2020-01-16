@@ -11,6 +11,7 @@ public class UIShader extends ShaderProgram {
 	
 	private int location_diffuseMap;
 	private int location_transformation;
+	private int location_borderWidth;
 	
 	public UIShader() {
 		super(VERTEX_FILE, FRAGMENT_FILE);
@@ -27,6 +28,7 @@ public class UIShader extends ShaderProgram {
 	protected void getAllUniformLocations() {
 		location_diffuseMap = super.getUniformLocation("diffuse");
 		location_transformation = super.getUniformLocation("transformation");
+		location_borderWidth = super.getUniformLocation("borderWidth");
 	}
 	
 	
@@ -36,5 +38,9 @@ public class UIShader extends ShaderProgram {
 
 	public void uploadTransformation(Matrix4fc transformation) {
 		super.loadMatrix4f(location_transformation, transformation);
+	}
+	
+	public void uploadBorderWidth(float borderWidth) {
+		super.loadFloat(location_borderWidth, borderWidth);
 	}
 }

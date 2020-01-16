@@ -28,6 +28,7 @@ public abstract class Component {
 	// Absolute dimensions
 	private float width = 1.0f;
 	private float height = 1.0f;
+	private float borderWidth = 0.0f;
 	// Component render flags
 	private boolean visible = false;
 	private boolean dirty = true;
@@ -125,6 +126,15 @@ public abstract class Component {
 	
 	public float getHeight() {
 		return height;
+	}
+	
+	public Component setBorderWidth(float borderWidth) {
+		this.borderWidth = borderWidth;
+		return this;
+	}
+	
+	public float getBorderWidth() {
+		return borderWidth;
 	}
 	
 	public Component setVisible(boolean visible) {

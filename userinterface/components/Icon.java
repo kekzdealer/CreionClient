@@ -1,16 +1,16 @@
 package components;
 
 import graphics.ShapeFactory;
+import graphics.Texture;
 import graphics.TextureFactory;
-import components.Component;
-import ui.ComponentRenderData;
 import ui.ComponentElement;
+import ui.ComponentRenderData;
 
-public class Window extends Component {
+public class Icon extends Component {
 	
-	private static final String TEXTURE_BODY = "window_backdrop";
+	private Texture icon;
 	
-	public Window() {
+	public Icon() {
 		super();
 	}
 	
@@ -30,7 +30,7 @@ public class Window extends Component {
 			body.setShape(sf.createQuad(body.getWidth(), body.getHeight()));
 						
 			// Textures
-			body.setTexture(tf.createTexture(TEXTURE_BODY));
+			body.setTexture(icon);
 			
 			// Finalize
 			final ComponentRenderData data = new ComponentRenderData(body);
@@ -41,5 +41,13 @@ public class Window extends Component {
 			return super.renderDataCache;
 		}
 	}
+
+	public Icon setIcon(Texture icon) {
+		this.icon = icon;
+		return this;
+	}
 	
+	public Texture getIcon() {
+		return icon;
+	}
 }

@@ -9,7 +9,7 @@ uniform sampler2D diffuse;
 void main(){
 	
 	vec4 texel = texture(diffuse, pass_texCoords);
-	if(texel.a == 0.0f) {
+	if(texel.a < 0.5) {
 		discard;
 	}
 	
