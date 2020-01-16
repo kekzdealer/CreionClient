@@ -3,6 +3,7 @@ package bus;
 public enum Recipients {
 	MAIN,
 	NETWORK_CONNECTOR,
+	GUI_SYSTEM,
 	ENTITY_SYSTEM,
 	RENDER_SYSTEM,
 	TRANSFORMATION_SYSTEM

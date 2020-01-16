@@ -1,6 +1,8 @@
 package input;
 
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.joml.Vector2f;
 import org.joml.Vector2fc;
@@ -26,7 +28,10 @@ public class SourceKeyboard implements InputSourceI {
 		CURSOR_LEFT,
 		CURSOR_RIGHT,
 		
-		SHUTDOWN
+		SHUTDOWN,
+		
+		TOGGLE_CHARACTER_INFO,
+		TOGGLE_INVENTORY
 	}
 	private final HashMap<Actions, Integer> keyMappings;	
 	
@@ -54,6 +59,9 @@ public class SourceKeyboard implements InputSourceI {
 		keyMappings.put(Actions.CURSOR_RIGHT, GLFW.GLFW_KEY_RIGHT);
 		
 		keyMappings.put(Actions.SHUTDOWN, GLFW.GLFW_KEY_ESCAPE);
+		
+		keyMappings.put(Actions.TOGGLE_CHARACTER_INFO, GLFW.GLFW_KEY_C);
+		keyMappings.put(Actions.TOGGLE_INVENTORY, GLFW.GLFW_KEY_B);
 	}
 
 	@Override
@@ -129,6 +137,13 @@ public class SourceKeyboard implements InputSourceI {
 	@Override
 	public boolean closeGame() {
 		return GLFW.glfwGetKey(display.window, keyMappings.get(Actions.SHUTDOWN)) == GLFW.GLFW_PRESS;
+	}
+	
+	@Override
+	public Set<String> toggleGUIWindow(){
+		final HashSet<String> e = new HashSet<>();
+		
+		return e;
 	}
 
 	@Override

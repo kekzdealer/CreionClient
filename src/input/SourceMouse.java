@@ -1,6 +1,8 @@
 package input;
 
 import java.nio.DoubleBuffer;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.joml.Vector2f;
 import org.joml.Vector2fc;
@@ -80,6 +82,11 @@ public class SourceMouse implements InputSourceI {
 	public boolean doAbility() {
 		// TODO implement
 		return false;
+	}
+	
+	@Override
+	public Set<String> toggleGUIWindow() {
+		return new HashSet<String>();
 	}
 	
 }

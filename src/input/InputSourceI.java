@@ -1,5 +1,7 @@
 package input;
 
+import java.util.Set;
+
 import org.joml.Vector2fc;
 import org.joml.Vector2ic;
 
@@ -35,5 +37,8 @@ public interface InputSourceI {
 	// Generic action triggered
 	public boolean doInteract();
 	public boolean doAbility();
+	
+	// GUI window toggles
+	public Set<String> toggleGUIWindow();
 	
 }

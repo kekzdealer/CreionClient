@@ -17,10 +17,12 @@ import systems.TransformationSystem;
 
 
 public class InputMapper {
+	
 	private MessageBus messageBus;
 
 	private List<InputSourceI> inputSources = new ArrayList<>();
 
+	
 	public InputMapper(Display display, MessageBus bus) {
 		if (!display.isInitialised()) {
 			throw new IllegalStateException("Display not initialised!");
@@ -54,7 +56,6 @@ public class InputMapper {
 			// Ignore inactive sources
 			return;
 		}
-		
 		
 		final Vector2ic moveDir = input.pollMoveDirection();
 		final float speedScalar = 0.015f;
