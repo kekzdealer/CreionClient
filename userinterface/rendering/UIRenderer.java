@@ -8,8 +8,8 @@ import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 
-import graphics.Shape;
 import ui.ComponentRenderData;
+import utility.Logger;
 
 public class UIRenderer {
 	
@@ -20,24 +20,6 @@ public class UIRenderer {
 	
 	public UIRenderer(int width, int height) {
 		//fbo = new UIFrameBuffer(width, height);
-	}
-	
-	/**
-	 * Converts from a coordinate system with an origin in the top left
-	 * to one with an origin in the middle of the screen.
-	 * </br>
-	 * </br>
-	 * 2D Graphics usually have their origin in the top left corner.
-	 * The y-axis would also be facing downwards instead of upwards.
-	 * Invert the y-value and offset by x = -1.0f, and y = 1.0f.
-	 * @return Converted transformation matrix
-	 */
-	private Matrix4fc convertToOGL(Matrix4fc transform) {
-		final Vector3f correctedY = transform.getTranslation(new Vector3f());
-		correctedY.set(correctedY.x(), -correctedY.y(), correctedY.z());
-		return new Matrix4f(transform)
-				.setTranslation(correctedY)
-				.translate(-1.0f, 1.0f, 0.0f);
 	}
 	
 	/**
@@ -70,7 +52,7 @@ public class UIRenderer {
 		GL13.glActiveTexture(GL13.GL_TEXTURE1);
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, bar.getTexture().getTextureID());
 		progressBarShader.uploadTextures(0, 1);
-		progressBarShader.uploadTransformation(convertToOGL(bar.getParentOffset()));
+		progressBarShader.uploadTransformation(bar.getParentOffset());
 		GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, bar.getShape().getVertexCount());
 		GL20.glDisableVertexAttribArray(0);
 		GL20.glDisableVertexAttribArray(1);
@@ -82,6 +64,10 @@ public class UIRenderer {
 	 * Renders a single UI element.
 	 */
 	public void renderComponent(ComponentRenderData element) {
+		
+		Logger.INFO.log("TextureID: " + element.getTexture().getTextureID());
+		Logger.INFO.log("VAO ID: " + element.getShape().getVaoID());
+		
 		uiShader.start();
 		uiShader.uploadBorderWidth(element.getBorderWidth());
 		GL30.glBindVertexArray(element.getShape().getVaoID());
@@ -90,7 +76,9 @@ public class UIRenderer {
 		GL13.glActiveTexture(GL13.GL_TEXTURE0);
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, element.getTexture().getTextureID());
 		uiShader.uploadTexture(0);
-		uiShader.uploadTransformation(convertToOGL(element.getParentOffset()));
+		final Matrix4fc conv = element.getParentOffset();
+		Logger.INFO.log(conv.getTranslation(new Vector3f()).toString());
+		uiShader.uploadTransformation(conv);
 		GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, element.getShape().getVertexCount());
 		GL20.glDisableVertexAttribArray(0);
 		GL20.glDisableVertexAttribArray(1);

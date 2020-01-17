@@ -25,8 +25,8 @@ public class GUISystem extends AbstractSystem {
 		
 		// Initialize GUI Windows
 		final Window characterInfo = new Window();
-		characterInfo.setPosition(1.0f, 1.0f);
-		characterInfo.setSize(2.0f, 2.0f);
+		characterInfo.setPosition(-0.7f, -0.7f);
+		characterInfo.setSize(0.3f, 1.0f);
 		characterInfo.setBorderWidth(0.03f);
 		uiManager.addComponent(characterInfo);
 		windows.put(TOGGLE_CHARACTER_INFO, characterInfo);

@@ -9,6 +9,8 @@ import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 
+import utility.Logger;
+
 @Deprecated
 public class ShapeFactory {
 	
@@ -69,6 +71,8 @@ public class ShapeFactory {
 		storeDataInAttributeList(0, 3, vBuffer);
 		storeDataInAttributeList(1, 2, tBuffer);
 		GL30.glBindVertexArray(0);
+		
+		Logger.INFO.log("Quad was created with w = " + width + " / height = " + height + " and loaded to:" + vaoID);
 		
 		return new Shape(vaoID, vertices.length / 3);
 	}

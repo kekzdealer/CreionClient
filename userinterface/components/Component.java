@@ -24,7 +24,7 @@ public abstract class Component {
 	private float xPos = 0.0f;
 	private float yPos = 0.0f;
 	// Absolute UI Layer (-127 to 127)
-	private byte layer = 1;
+	private byte layer = 0;
 	// Absolute dimensions
 	private float width = 1.0f;
 	private float height = 1.0f;
@@ -38,7 +38,7 @@ public abstract class Component {
 	protected ComponentRenderData renderDataCache = null;
 	
 	public Component() {
-		getComponentRenderData();
+		
 	}
 	
 	public void add(Component component) {
@@ -69,19 +69,20 @@ public abstract class Component {
 	 * at the bottom left, instead of the top left. This method does that conversion 
 	 * automatically. </br>
 	 * The parent component transformation is also automatically added.
-	 * @param child
+	 * @param component
 	 * 			Child to position
 	 */
-	protected Matrix4fc positionChildComponent(Component child) {
+	protected Matrix4fc positionComponent(Component component) {
 		final Matrix4f transform = new Matrix4f();
-		// Make relative to this component
+		// Make relative to parent
 		transform.translate(xPos, yPos, layer);
-		// Encode offset
-		transform.translate(
-				child.getPosition().x(), 
-				child.getPosition().y() + child.getHeight(), 
-				child.getLayer() - this.getLayer());
-		
+		if(!component.equals(this)) {
+			// Encode offset to this component
+			transform.translate(
+					component.getPosition().x(), 
+					component.getPosition().y() + component.getHeight(), 
+					component.getLayer() - this.getLayer());			
+		}
 		return transform;
 	}
 	

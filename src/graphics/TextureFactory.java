@@ -10,6 +10,8 @@ import org.lwjgl.opengl.GL11C;
 import org.lwjgl.opengl.GL12C;
 import org.lwjgl.stb.STBImage;
 
+import utility.Logger;
+
 @Deprecated
 public class TextureFactory {
 	
@@ -56,6 +58,8 @@ public class TextureFactory {
 		GL11C.glTexImage2D(GL11C.GL_TEXTURE_2D, 0, GL11C.GL_RGBA, widthInt, heightInt, 0, GL11C.GL_RGBA, GL11C.GL_UNSIGNED_BYTE, data);
 		
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
+		
+		Logger.INFO.log("Texture " + filename + " was requested and loaded to: " + textureID);
 		
 		return new Texture(textureID);
 	}

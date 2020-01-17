@@ -30,7 +30,7 @@ public class ProgressBar extends Component {
 					sf.createQuad(super.getWidth(), super.getHeight()),
 					tf.createTexture(TEXTURE_BACKGROUND),
 					super.getBorderWidth(),
-					super.positionChildComponent(this));
+					super.positionComponent(this));
 			
 			for(Component child : super.getChildren()) {
 				data.addChildren(child.getComponentRenderData());

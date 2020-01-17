@@ -28,7 +28,7 @@ public class Window extends Component {
 					sf.createQuad(super.getWidth(), super.getHeight()),
 					tf.createTexture(TEXTURE_BODY),
 					super.getBorderWidth(),
-					super.positionChildComponent(this));
+					super.positionComponent(this));
 			
 			for(Component child : super.getChildren()) {
 				data.addChildren(child.getComponentRenderData());

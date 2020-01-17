@@ -29,7 +29,7 @@ public class Icon extends Component {
 					sf.createQuad(super.getWidth(), super.getHeight()),
 					tf.createTexture(iconName),
 					super.getBorderWidth(),
-					super.positionChildComponent(this));
+					super.positionComponent(this));
 			
 			for(Component child : super.getChildren()) {
 				data.addChildren(child.getComponentRenderData());
