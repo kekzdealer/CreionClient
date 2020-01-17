@@ -11,13 +11,14 @@ import org.lwjgl.opengl.GL30;
 import bus.Message;
 import bus.MessageBus;
 import bus.Recipients;
-import graphics.BackgroundShader;
+import graphics.GameShader;
 import graphics.Display;
 import logic.EntityDatabase;
 import logic.EntityDatabase.ComponentType;
 import tags.CRender;
 import tags.CTransformation;
 import tags.Component;
+import ui.UIManager;
 import utility.Logger;
 import utility.Projector;
 import logic.RenderComponentResourceManager;
@@ -26,15 +27,19 @@ public class RenderSystem extends AbstractSystem {
 	
 	private final Display display;
 	private final RenderComponentResourceManager renderComponentResourceManager;
+	private final UIManager uiManager;
 	
-	private final BackgroundShader backgroundShader = new BackgroundShader();
+	private final GameShader gameShader = new GameShader();
 	
 	private final Matrix4fc projectionMatrix; 
 	
-	public RenderSystem(EntityDatabase entityDB, Display display, RenderComponentResourceManager renderComponentResourceManager) {
+	public RenderSystem(EntityDatabase entityDB, Display display, 
+			RenderComponentResourceManager renderComponentResourceManager,
+			UIManager uiManager) {
 		super(entityDB);
 		this.display = display;
 		this.renderComponentResourceManager = renderComponentResourceManager;
+		this.uiManager = uiManager;
 		
 		if (!display.isInitialised()) {
 			throw new IllegalStateException("Display not initialised!");
@@ -88,17 +93,17 @@ public class RenderSystem extends AbstractSystem {
 			final CRender cr = entityDB.getRenderComponent(eID);
 			final CTransformation ct = entityDB.getTransformationComponent(eID);
 			
-			backgroundShader.start();
-			backgroundShader.uploadProjection(projectionMatrix);
+			gameShader.start();
+			gameShader.uploadProjection(projectionMatrix);
 			GL30.glBindVertexArray(cr.getShape().getVaoID());
 			GL20.glEnableVertexAttribArray(0);
 			GL20.glEnableVertexAttribArray(1);
 			GL13.glActiveTexture(GL13.GL_TEXTURE0);
 			GL11.glBindTexture(GL11.GL_TEXTURE_2D, cr.getTexture().getTextureID());
-			backgroundShader.uploadTexture(0); // Activated texture bank 0 two lines ago, so pass 0 here.
-			backgroundShader.uploadTransformation(ct.get());
+			gameShader.uploadTexture(0); // Activated texture bank 0 two lines ago, so pass 0 here.
+			gameShader.uploadTransformation(ct.get());
 			GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, cr.getShape().getVertexCount());
-			backgroundShader.stop();
+			gameShader.stop();
 			GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
 			GL20.glDisableVertexAttribArray(0);
 			GL20.glDisableVertexAttribArray(1);
@@ -106,9 +111,25 @@ public class RenderSystem extends AbstractSystem {
 		}
 		
 		// Render UI frame buffer texture from UIManager here later
-		
+		gameShader.start();
+		gameShader.uploadProjection(projectionMatrix);
+		GL30.glBindVertexArray(renderComponentResourceManager.getGUICarrierQuad().getVaoID());
+		GL20.glEnableVertexAttribArray(0);
+		GL20.glEnableVertexAttribArray(1);
+		GL13.glActiveTexture(GL13.GL_TEXTURE0);
+		GL11.glBindTexture(GL11.GL_TEXTURE_2D, uiManager.getUITexture());
+		Logger.INFO.log("Rendering FBO textureID: " + uiManager.getUITexture());
+		gameShader.uploadTexture(0); // Same logic as above
+		gameShader.uploadTransformation(new Matrix4f().translate(-1.0f, 1.0f, 0.0f));
+		GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, renderComponentResourceManager.getGUICarrierQuad().getVertexCount());
+		gameShader.stop();
+		GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
+		GL20.glDisableVertexAttribArray(0);
+		GL20.glDisableVertexAttribArray(1);
+		GL30.glBindVertexArray(0);
+
 		// Finalize
-		
+		display.submitFrame();
 	}
 	
 	@Override

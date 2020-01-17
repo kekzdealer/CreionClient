@@ -1,6 +1,5 @@
 package rendering;
 
-import org.joml.Matrix4f;
 import org.joml.Matrix4fc;
 import org.joml.Vector3f;
 import org.lwjgl.opengl.GL11;
@@ -16,10 +15,14 @@ public class UIRenderer {
 	private final UIShader uiShader = new UIShader();
 	private final ProgressBarShader progressBarShader = new ProgressBarShader();
 	
-	private final UIFrameBuffer fbo = null;
+	private final UIFrameBuffer fbo;
 	
 	public UIRenderer(int width, int height) {
-		//fbo = new UIFrameBuffer(width, height);
+		fbo = new UIFrameBuffer(width, height);
+	}
+	
+	public void destroy() {
+		fbo.destroy();
 	}
 	
 	/**

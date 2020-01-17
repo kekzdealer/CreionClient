@@ -74,7 +74,8 @@ public class Main implements Runnable {
 		final RenderComponentResourceManager renderComponentResourceManager = new RenderComponentResourceManager();
 		
 		final EntitySystem entitySystem = new EntitySystem();
-		final RenderSystem renderSystem = new RenderSystem(entitySystem.getEntityDB(), display, renderComponentResourceManager);
+		final RenderSystem renderSystem = new RenderSystem(entitySystem.getEntityDB(), display, 
+				renderComponentResourceManager, uiManager);
 		final TransformationSystem transformationSystem = new TransformationSystem(entitySystem.getEntityDB());
 		final GUISystem guiSystem = new GUISystem(entitySystem.getEntityDB(), uiManager);
 		entitySystem.setupSystems(renderSystem, transformationSystem, guiSystem);
@@ -94,11 +95,10 @@ public class Main implements Runnable {
 			transformationSystem.update();
 			
 			// Render
-			renderSystem.processMessages();
-			renderSystem.update();
 			guiSystem.processMessages();
 			guiSystem.update();
-			display.submitFrame();
+			renderSystem.processMessages();
+			renderSystem.update();
 			// Control
 			if(GLFW.glfwWindowShouldClose(display.window)){
 				running = false;

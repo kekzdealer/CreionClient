@@ -33,14 +33,14 @@ public class GUISystem extends AbstractSystem {
 		
 		final Window ch = new Window();
 		ch.setPosition(0.1f, 0.6f);
-		ch.setSize(0.2f, 0.2f);
+		ch.setSize(0.1f, 0.2f);
 		ch.setBorderWidth(0.01f);
 		ch.setLayer((byte) -1);
 		characterInfo.add(ch);
 		
 		final Window inventory = new Window();
-		inventory.setPosition(1.0f, 0.1f);
-		inventory.setSize(0.2f, 0.2f);
+		inventory.setPosition(0.5f, -0.5f);
+		inventory.setSize(0.3f, 0.3f);
 		inventory.setBorderWidth(0.03f);
 		uiManager.addComponent(inventory);
 		windows.put(TOGGLE_INVENTORY, inventory);

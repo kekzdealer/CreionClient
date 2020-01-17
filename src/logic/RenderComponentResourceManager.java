@@ -34,6 +34,8 @@ public class RenderComponentResourceManager implements AutoCloseable {
 	private final Shape defaultQuad;
 	private final Texture defaultTexture;
 	
+	private final Shape guiCarrierQuad;
+	
 	public RenderComponentResourceManager() {
 		presets.add(new EntityPreset("goblin_shaman", "goblin_shaman64"));
 		presets.add(new EntityPreset("mage", "mage64"));
@@ -42,13 +44,13 @@ public class RenderComponentResourceManager implements AutoCloseable {
 		presets.add(new EntityPreset("fireball", "fireball16"));
 		presets.add(new EntityPreset("ice_shard", "ice_shard16"));
 		
-		defaultQuad = createDefaultQuad();
+		defaultQuad = createDefaultQuad(0.2f, 0.2f);
 		defaultTexture = createDefaultTexture();
+		
+		guiCarrierQuad = createDefaultQuad(2.0f, 2.0f);
 	}
 	
-	private Shape createDefaultQuad() {
-		final float width = 0.2f;
-		final float height = 0.2f;
+	private Shape createDefaultQuad(float width, float height) {
 		// init data
 		final float[] vertices = {
 				// Left bottom triangle
@@ -225,6 +227,14 @@ public class RenderComponentResourceManager implements AutoCloseable {
 		if(textureCache.get(textureName) < 1) {
 			GL11.glDeleteTextures(textures.get(textureName).getTextureID());
 		}
+	}
+	
+	/**
+	 * The GUI Frame Buffer Object's texture will be rendered onto this quad.
+	 * @return a screen filling quad
+	 */
+	public Shape getGUICarrierQuad() {
+		return guiCarrierQuad;
 	}
 	
 	

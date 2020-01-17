@@ -11,7 +11,7 @@ import org.joml.Matrix4fc;
  * @author kekzdealer
  *
  */
-public class BackgroundShader extends ShaderProgram {
+public class GameShader extends ShaderProgram {
 	
 	private static final String VERTEX_FILE = "background.txt";
 	private static final String FRAGMENT_FILE = "background.txt";
@@ -21,7 +21,7 @@ public class BackgroundShader extends ShaderProgram {
 	private int location_transformation;
 	private int location_projection;
 	
-	public BackgroundShader() {
+	public GameShader() {
 		super(VERTEX_FILE, FRAGMENT_FILE);
 		getAllUniformLocations();
 		

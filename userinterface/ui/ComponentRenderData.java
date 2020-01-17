@@ -46,7 +46,6 @@ public class ComponentRenderData {
 	}
 	
 	public void addParentOffset(Matrix4fc offset) {
-		System.out.println("adding offset");
 		translation.mul(offset);
 	}
 	
