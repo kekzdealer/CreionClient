@@ -1,5 +1,6 @@
 package systems;
 
+import org.joml.Matrix4f;
 import org.joml.Matrix4fc;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL11C;
@@ -40,6 +41,7 @@ public class RenderSystem extends AbstractSystem {
 		}
 		
 		GL11C.glViewport(0, 0, display.getWidth(), display.getHeight());
+		//projectionMatrix = new Matrix4f();
 		projectionMatrix = Projector.getProjectionMatrix(-1.6f, 1.6f, 0.9f, -0.9f, -128.0f, 128.0f);
 		
 		// Back-face culling

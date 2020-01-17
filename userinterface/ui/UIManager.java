@@ -37,6 +37,7 @@ public class UIManager {
 			if(component.isDirty()) {
 				// Newly hidden components are erased
 				if(!component.isVisible()) {
+					Logger.INFO.log("Erasing Component");
 					for(ComponentRenderData element : component.getComponentRenderData().withChildDataAsSet()) {
 						Logger.INFO.log("Erasing a component");
 						renderer.eraseComponent(element);
@@ -46,7 +47,7 @@ public class UIManager {
 				} else {
 					// ProgressBars requires a special shader
 					if(component instanceof ProgressBar) {
-						Logger.INFO.log("Rendering a progress bar");
+	
 						final ProgressBar p = (ProgressBar) component;
 						renderer.renderProgressBar(component.getComponentRenderData(), 
 								p.getProgress(), p.getProgressMax());

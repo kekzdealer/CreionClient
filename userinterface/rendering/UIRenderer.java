@@ -52,7 +52,7 @@ public class UIRenderer {
 		GL13.glActiveTexture(GL13.GL_TEXTURE1);
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, bar.getTexture().getTextureID());
 		progressBarShader.uploadTextures(0, 1);
-		progressBarShader.uploadTransformation(bar.getParentOffset());
+		progressBarShader.uploadTransformation(bar.getTranslation());
 		GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, bar.getShape().getVertexCount());
 		GL20.glDisableVertexAttribArray(0);
 		GL20.glDisableVertexAttribArray(1);
@@ -64,10 +64,6 @@ public class UIRenderer {
 	 * Renders a single UI element.
 	 */
 	public void renderComponent(ComponentRenderData element) {
-		
-		Logger.INFO.log("TextureID: " + element.getTexture().getTextureID());
-		Logger.INFO.log("VAO ID: " + element.getShape().getVaoID());
-		
 		uiShader.start();
 		uiShader.uploadBorderWidth(element.getBorderWidth());
 		GL30.glBindVertexArray(element.getShape().getVaoID());
@@ -76,7 +72,7 @@ public class UIRenderer {
 		GL13.glActiveTexture(GL13.GL_TEXTURE0);
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, element.getTexture().getTextureID());
 		uiShader.uploadTexture(0);
-		final Matrix4fc conv = element.getParentOffset();
+		final Matrix4fc conv = element.getTranslation();
 		Logger.INFO.log(conv.getTranslation(new Vector3f()).toString());
 		uiShader.uploadTransformation(conv);
 		GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, element.getShape().getVertexCount());

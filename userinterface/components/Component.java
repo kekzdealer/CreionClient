@@ -32,13 +32,13 @@ public abstract class Component {
 	// Component render flags
 	private boolean visible = false;
 	private boolean dirty = true;
-	// Child components
+	// Component relations
 	private final HashSet<Component> children = new HashSet<>();
 	// Render data cache
 	protected ComponentRenderData renderDataCache = null;
 	
 	public Component() {
-		
+	
 	}
 	
 	public void add(Component component) {
@@ -63,26 +63,11 @@ public abstract class Component {
 	 */
 	public abstract ComponentRenderData getComponentRenderData();
 	
-	/**
-	 * Helper method to make positioning of child elements more intuitive. </br>
-	 * Unlike what is usual for UI-frameworks, OpenGL puts the origin of a planar shape
-	 * at the bottom left, instead of the top left. This method does that conversion 
-	 * automatically. </br>
-	 * The parent component transformation is also automatically added.
-	 * @param component
-	 * 			Child to position
-	 */
-	protected Matrix4fc positionComponent(Component component) {
+	protected Matrix4f positionComponent(Component component) {
 		final Matrix4f transform = new Matrix4f();
 		// Make relative to parent
-		transform.translate(xPos, yPos, layer);
-		if(!component.equals(this)) {
-			// Encode offset to this component
-			transform.translate(
-					component.getPosition().x(), 
-					component.getPosition().y() + component.getHeight(), 
-					component.getLayer() - this.getLayer());			
-		}
+		transform.translate(xPos, yPos - height, layer);
+		
 		return transform;
 	}
 	
