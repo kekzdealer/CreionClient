@@ -85,8 +85,8 @@ public class SourceMouse implements InputSourceI {
 	}
 	
 	@Override
-	public Set<String> toggleGUIWindow() {
-		return new HashSet<String>();
+	public Set<Integer> toggleGUIWindow() {
+		return new HashSet<Integer>();
 	}
 	
 }

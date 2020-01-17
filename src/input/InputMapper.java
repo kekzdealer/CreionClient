@@ -64,5 +64,9 @@ public class InputMapper {
 		if(input.doAbility()) {
 			messageBus.messageSystem(Recipients.ENTITY_SYSTEM, EntitySystem.SPAWN, "wheat", new Matrix4f().translate(0.0f, 0.0f, -1.0f));
 		}
+		
+		for(int guiWindow : input.toggleGUIWindow()) {
+			messageBus.messageSystem(Recipients.GUI_SYSTEM, guiWindow);
+		}
 	}
 }

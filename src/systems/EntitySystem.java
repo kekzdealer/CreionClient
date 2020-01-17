@@ -17,14 +17,17 @@ public class EntitySystem {
 
 	private RenderSystem renderSystem;
 	private TransformationSystem transformationSystem;
+	private GUISystem guiSystem;
 	
 	public EntityDatabase getEntityDB() {
 		return entityDB;
 	}
 	
-	public void setupSystems(RenderSystem renderSystem, TransformationSystem transformationSystem) {
+	public void setupSystems(RenderSystem renderSystem, TransformationSystem transformationSystem,
+			GUISystem guiSystem) {
 		this.renderSystem = renderSystem;
 		this.transformationSystem = transformationSystem;
+		this.guiSystem = guiSystem;
 	}
 	
 	public static final int SPAWN = 0;

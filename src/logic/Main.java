@@ -13,8 +13,10 @@ import graphics.TextureFactory;
 import input.InputMapper;
 import networking.NetworkConnector;
 import systems.EntitySystem;
+import systems.GUISystem;
 import systems.RenderSystem;
 import systems.TransformationSystem;
+import ui.UIManager;
 import utility.Logger;
 
 public class Main implements Runnable {
@@ -67,21 +69,26 @@ public class Main implements Runnable {
 		}
 		
 		final InputMapper inputMapper = new InputMapper(display, messageBus);
+		final UIManager uiManager = new UIManager(display.getWidth(), display.getHeight());
 		
 		final RenderComponentResourceManager renderComponentResourceManager = new RenderComponentResourceManager();
 		
 		final EntitySystem entitySystem = new EntitySystem();
 		final RenderSystem renderSystem = new RenderSystem(entitySystem.getEntityDB(), display, renderComponentResourceManager);
 		final TransformationSystem transformationSystem = new TransformationSystem(entitySystem.getEntityDB());
-		entitySystem.setupSystems(renderSystem, transformationSystem);
+		final GUISystem guiSystem = new GUISystem(entitySystem.getEntityDB(), uiManager);
+		entitySystem.setupSystems(renderSystem, transformationSystem, guiSystem);
 		
 		// spawn player. has id = 0.
 		messageBus.messageSystem(Recipients.ENTITY_SYSTEM, EntitySystem.SPAWN, "mage", new Matrix4f());
 		
 		while(running) {
-			
+			frameBegin = (float) GLFW.glfwGetTime();
 			// Input
 			inputMapper.updateInput();
+			
+			guiSystem.processMessages();
+			guiSystem.update();
 			
 			// Logic
 			entitySystem.processMessages();
@@ -100,9 +107,12 @@ public class Main implements Runnable {
 			
 			FRAME_TIME = (float) GLFW.glfwGetTime() - frameBegin;
 			try {
-				Thread.sleep((long) Math.max(0, (1000 / TARGET_FPS) - FRAME_TIME));
+				final long sleepyTime = (long) Math.max(0, (1000 / TARGET_FPS) - FRAME_TIME);
+				Thread.sleep(sleepyTime);
+				Logger.INFO.log("Slept for: " + sleepyTime);
 			} catch(InterruptedException e) {
-				e.printStackTrace();
+				Logger.ERROR.log("Main thread was interrupted while sleeping");
+				e.printStackTrace(Logger.ERROR.getPrintStream());
 			}
 		}
 		ShapeFactory.getInstance().destroyCreatedData();

@@ -39,6 +39,6 @@ public interface InputSourceI {
 	public boolean doAbility();
 	
 	// GUI window toggles
-	public Set<String> toggleGUIWindow();
+	public Set<Integer> toggleGUIWindow();
 	
 }

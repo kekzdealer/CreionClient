@@ -8,35 +8,14 @@ import components.Component;
 
 public class UIManager {
 	
-	private static UIManager instance = null;
-	
 	private final HashSet<Component> components = new HashSet<>();
 	private final UIRenderer renderer;
 		
-	private UIManager(int width, int height) {
+	public UIManager(int width, int height) {
 		renderer = new UIRenderer(width, height);
 	}
 	
-	/**
-	 * Acquire the singleton instance of this UI Manager.
-	 * 
-	 * @param width
-	 * 			Horizontal screen resolution.
-	 * @param height
-	 * 			Vertical screen resolution.
-	 * @return
-	 * 			Instance of UIManager
-	 */
-	public static UIManager getInstance(int width, int height) {
-		return (instance != null) ? instance : new UIManager(width, height);
-	}
-	
-	public static void destroy() {
-		instance.cleanUp();
-		instance = null;
-	}
-	
-	private void cleanUp() {
+	public void cleanUp() {
 		// TODO implement UIManager.cleanUp()
 	}
 	

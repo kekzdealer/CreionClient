@@ -11,6 +11,7 @@ import org.joml.Vector2ic;
 import org.lwjgl.glfw.GLFW;
 
 import graphics.Display;
+import systems.GUISystem;
 
 public class SourceKeyboard implements InputSourceI {
 	
@@ -140,9 +141,14 @@ public class SourceKeyboard implements InputSourceI {
 	}
 	
 	@Override
-	public Set<String> toggleGUIWindow(){
-		final HashSet<String> e = new HashSet<>();
-		
+	public Set<Integer> toggleGUIWindow(){
+		final HashSet<Integer> e = new HashSet<>();
+		if(GLFW.glfwGetKey(display.window, keyMappings.get(Actions.TOGGLE_CHARACTER_INFO)) == GLFW.GLFW_PRESS) {
+			e.add(GUISystem.TOGGLE_CHARACTER_INFO);
+		}
+		if(GLFW.glfwGetKey(display.window, keyMappings.get(Actions.TOGGLE_INVENTORY)) == GLFW.GLFW_PRESS) {
+			e.add(GUISystem.TOGGLE_INVENTORY);
+		}
 		return e;
 	}
 
