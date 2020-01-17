@@ -3,7 +3,6 @@ package components;
 import java.util.HashSet;
 
 import org.joml.Matrix4f;
-import org.joml.Matrix4fc;
 import org.joml.Vector2f;
 import org.joml.Vector2fc;
 
@@ -63,6 +62,12 @@ public abstract class Component {
 	 */
 	public abstract ComponentRenderData getComponentRenderData();
 	
+	/*
+	 * Returns a translation matrix for this component.
+	 * The y-axis is offset by it's height, as OpenGL
+	 * puts the origin of objects at the bottom left
+	 * instead of top left.
+	 */
 	protected Matrix4f positionComponent(Component component) {
 		final Matrix4f transform = new Matrix4f();
 		// Make relative to parent
@@ -71,6 +76,11 @@ public abstract class Component {
 		return transform;
 	}
 	
+	/**
+	 * A component's origin is at the top left.
+	 * The position does however still follow the
+	 * OpenGL coordinate system.
+	 */
 	public Component setPosition(float x, float y) {
 		xPos = x;
 		yPos = y;
@@ -78,6 +88,11 @@ public abstract class Component {
 		return this;
 	}
 	
+	/**
+	 * A component's origin is at the top left.
+	 * The position does however still follow the
+	 * OpenGL coordinate system.
+	 */
 	public Vector2fc getPosition() {
 		return new Vector2f(xPos, yPos);
 	}

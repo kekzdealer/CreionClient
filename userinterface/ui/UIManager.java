@@ -47,7 +47,6 @@ public class UIManager {
 				} else {
 					// ProgressBars requires a special shader
 					if(component instanceof ProgressBar) {
-	
 						final ProgressBar p = (ProgressBar) component;
 						renderer.renderProgressBar(component.getComponentRenderData(), 
 								p.getProgress(), p.getProgressMax());
