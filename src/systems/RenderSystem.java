@@ -106,7 +106,7 @@ public class RenderSystem extends AbstractSystem {
 		// Render UI frame buffer texture from UIManager here later
 		
 		// Finalize
-		display.submitFrame();
+		
 	}
 	
 	@Override

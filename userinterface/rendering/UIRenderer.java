@@ -1,7 +1,5 @@
 package rendering;
 
-import java.util.Iterator;
-
 import org.joml.Matrix4f;
 import org.joml.Matrix4fc;
 import org.joml.Vector3f;
@@ -10,10 +8,7 @@ import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 
-import components.ProgressBar;
 import graphics.Shape;
-import graphics.Texture;
-import ui.ComponentElement;
 import ui.ComponentRenderData;
 
 public class UIRenderer {
@@ -62,25 +57,21 @@ public class UIRenderer {
 	/**
 	 * Renders a single progress bar.
 	 */
-	public void renderProgressBar(ProgressBar bar) {
+	public void renderProgressBar(ComponentRenderData bar, float progress, float maxProgress) {
 		progressBarShader.start();
 		progressBarShader.uploadBorderWidth(bar.getBorderWidth());
-		progressBarShader.uploadProgress(bar.getProgress() / bar.getProgressMax());
-		final ComponentElement element = bar.getComponentRenderData().getElement();
-		final Iterator<Texture> tex = element.getTextures().iterator();
-		
-		GL30.glBindVertexArray(element.getShape().getVaoID());
+		progressBarShader.uploadProgress(progress / maxProgress);
+		GL30.glBindVertexArray(bar.getShape().getVaoID());
 		GL20.glEnableVertexAttribArray(0);
 		GL20.glEnableVertexAttribArray(1);
 		GL13.glActiveTexture(GL13.GL_TEXTURE0);
-		GL11.glBindTexture(GL11.GL_TEXTURE_2D, tex.next().getTextureID());
+		// TODO only uses one texture right now
+		GL11.glBindTexture(GL11.GL_TEXTURE_2D, bar.getTexture().getTextureID());
 		GL13.glActiveTexture(GL13.GL_TEXTURE1);
-		GL11.glBindTexture(GL11.GL_TEXTURE_2D, tex.next().getTextureID());
+		GL11.glBindTexture(GL11.GL_TEXTURE_2D, bar.getTexture().getTextureID());
 		progressBarShader.uploadTextures(0, 1);
-		for(Matrix4fc transform : element.getTransforms()) {
-			progressBarShader.uploadTransformation(convertToOGL(transform));
-			GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, element.getShape().getVertexCount());
-		}
+		progressBarShader.uploadTransformation(convertToOGL(bar.getParentOffset()));
+		GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, bar.getShape().getVertexCount());
 		GL20.glDisableVertexAttribArray(0);
 		GL20.glDisableVertexAttribArray(1);
 		GL30.glBindVertexArray(0);
@@ -90,18 +81,17 @@ public class UIRenderer {
 	/**
 	 * Renders a single UI element.
 	 */
-	public void renderElement(ComponentRenderData element) {
+	public void renderComponent(ComponentRenderData element) {
 		uiShader.start();
+		uiShader.uploadBorderWidth(element.getBorderWidth());
 		GL30.glBindVertexArray(element.getShape().getVaoID());
 		GL20.glEnableVertexAttribArray(0);
 		GL20.glEnableVertexAttribArray(1);
 		GL13.glActiveTexture(GL13.GL_TEXTURE0);
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, element.getTexture().getTextureID());
 		uiShader.uploadTexture(0);
-		for(Matrix4fc transform : element.getTransforms()) {
-			uiShader.uploadTransformation(convertToOGL(transform));
-			GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, element.getShape().getVertexCount());
-		}
+		uiShader.uploadTransformation(convertToOGL(element.getParentOffset()));
+		GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, element.getShape().getVertexCount());
 		GL20.glDisableVertexAttribArray(0);
 		GL20.glDisableVertexAttribArray(1);
 		GL30.glBindVertexArray(0);
@@ -111,9 +101,9 @@ public class UIRenderer {
 	/**
 	 * Erases the specified area by overwriting it with a fully transparent texture.
 	 */
-	public void eraseArea(Shape area) {
+	public void eraseComponent(ComponentRenderData element) {
 		uiShader.start();
-		
+		// TODO overwrite with generic transparent texture from resource manager
 		uiShader.stop();
 	}
 	

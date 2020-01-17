@@ -21,7 +21,8 @@ public class Button extends Component {
 			final ComponentRenderData data = new ComponentRenderData(
 					sf.createQuad(super.getWidth(), super.getHeight()),
 					tf.createTexture(TEXTURE_BODY),
-					super.getBorderWidth());
+					super.getBorderWidth(),
+					super.positionChildComponent(this));
 			
 			for(Component child : super.getChildren()) {
 				data.addChildren(child.getComponentRenderData());

@@ -3,15 +3,17 @@ package components;
 import graphics.ShapeFactory;
 import graphics.Texture;
 import graphics.TextureFactory;
-import ui.ComponentElement;
 import ui.ComponentRenderData;
 
 public class Icon extends Component {
 	
 	private Texture icon;
 	
-	public Icon() {
+	private String iconName;
+	
+	public Icon(String iconName) {
 		super();
+		this.iconName = iconName;
 	}
 	
 	@Override
@@ -25,8 +27,9 @@ public class Icon extends Component {
 			
 			final ComponentRenderData data = new ComponentRenderData(
 					sf.createQuad(super.getWidth(), super.getHeight()),
-					tf.createTexture(TEXTURE_BODY),
-					super.getBorderWidth());
+					tf.createTexture(iconName),
+					super.getBorderWidth(),
+					super.positionChildComponent(this));
 			
 			for(Component child : super.getChildren()) {
 				data.addChildren(child.getComponentRenderData());

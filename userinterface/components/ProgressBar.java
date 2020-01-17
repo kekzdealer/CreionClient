@@ -3,7 +3,6 @@ package components;
 import graphics.ShapeFactory;
 import graphics.TextureFactory;
 import components.Component;
-import ui.ComponentElement;
 import ui.ComponentRenderData;
 
 public class ProgressBar extends Component {
@@ -23,18 +22,16 @@ public class ProgressBar extends Component {
 		if(super.renderDataCache != null) {
 			return super.renderDataCache;
 		} else {
-			final ComponentElement body = new ComponentElement(
-					super.getWidth(), super.getHeight());
 			
 			final ShapeFactory sf = ShapeFactory.getInstance();
 			final TextureFactory tf = TextureFactory.getIntance();
 			
-			body.setShape(sf.createQuad(body.getWidth(), body.getHeight()));
-			super.positionElement(body, 0.0f, 0.0f, 0.0f);
-			body.setTexture(tf.createTexture(TEXTURE_BACKGROUND));
-			body.setTexture(tf.createTexture(TEXTURE_FOREGROUND));
+			final ComponentRenderData data = new ComponentRenderData(
+					sf.createQuad(super.getWidth(), super.getHeight()),
+					tf.createTexture(TEXTURE_BACKGROUND),
+					super.getBorderWidth(),
+					super.positionChildComponent(this));
 			
-			final ComponentRenderData data = new ComponentRenderData(body);
 			for(Component child : super.getChildren()) {
 				data.addChildren(child.getComponentRenderData());
 			}

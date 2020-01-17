@@ -2,6 +2,7 @@ package components;
 
 import graphics.ShapeFactory;
 import graphics.TextureFactory;
+
 import components.Component;
 import ui.ComponentRenderData;
 
@@ -16,6 +17,7 @@ public class Window extends Component {
 	@Override
 	public ComponentRenderData getComponentRenderData() {
 		if(super.renderDataCache != null) {
+			super.markClean();
 			return super.renderDataCache;
 		} else {
 			
@@ -25,13 +27,15 @@ public class Window extends Component {
 			final ComponentRenderData data = new ComponentRenderData(
 					sf.createQuad(super.getWidth(), super.getHeight()),
 					tf.createTexture(TEXTURE_BODY),
-					super.getBorderWidth());
+					super.getBorderWidth(),
+					super.positionChildComponent(this));
 			
 			for(Component child : super.getChildren()) {
 				data.addChildren(child.getComponentRenderData());
 			}
 			
 			super.renderDataCache = data;
+			super.markClean();
 			return super.renderDataCache;
 		}
 	}

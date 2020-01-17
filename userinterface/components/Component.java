@@ -3,6 +3,7 @@ package components;
 import java.util.HashSet;
 
 import org.joml.Matrix4f;
+import org.joml.Matrix4fc;
 import org.joml.Vector2f;
 import org.joml.Vector2fc;
 
@@ -23,7 +24,7 @@ public abstract class Component {
 	private float xPos = 0.0f;
 	private float yPos = 0.0f;
 	// Absolute UI Layer (-127 to 127)
-	private byte layer = -1;
+	private byte layer = 1;
 	// Absolute dimensions
 	private float width = 1.0f;
 	private float height = 1.0f;
@@ -63,28 +64,25 @@ public abstract class Component {
 	public abstract ComponentRenderData getComponentRenderData();
 	
 	/**
-	 * Helper method to make positioning of component elements more intuitive. </br>
+	 * Helper method to make positioning of child elements more intuitive. </br>
 	 * Unlike what is usual for UI-frameworks, OpenGL puts the origin of a planar shape
 	 * at the bottom left, instead of the top left. This method does that conversion 
 	 * automatically. </br>
 	 * The parent component transformation is also automatically added.
-	 * @param element
-	 * 			Element to position
-	 * @param offsetX
-	 * @param offsetY
-	 * @param offsetZ
+	 * @param child
+	 * 			Child to position
 	 */
-	protected void positionElement(ComponentElement element, float offsetX, float offsetY, float offsetZ) {
+	protected Matrix4fc positionChildComponent(Component child) {
 		final Matrix4f transform = new Matrix4f();
-		transform.identity();
 		// Make relative to this component
 		transform.translate(xPos, yPos, layer);
 		// Encode offset
-		transform.translate(offsetX, 
-				offsetY + element.getHeight(), 
-				offsetZ);
+		transform.translate(
+				child.getPosition().x(), 
+				child.getPosition().y() + child.getHeight(), 
+				child.getLayer() - this.getLayer());
 		
-		element.addTransform(transform);
+		return transform;
 	}
 	
 	public Component setPosition(float x, float y) {
@@ -147,6 +145,11 @@ public abstract class Component {
 	
 	public boolean isVisible() {
 		return visible;
+	}
+	
+	public Component markClean() {
+		this.dirty = false;
+		return this;
 	}
 	
 	public Component markDirty() {

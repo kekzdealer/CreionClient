@@ -87,9 +87,6 @@ public class Main implements Runnable {
 			// Input
 			inputMapper.updateInput();
 			
-			guiSystem.processMessages();
-			guiSystem.update();
-			
 			// Logic
 			entitySystem.processMessages();
 			
@@ -99,7 +96,9 @@ public class Main implements Runnable {
 			// Render
 			renderSystem.processMessages();
 			renderSystem.update();
-			
+			guiSystem.processMessages();
+			guiSystem.update();
+			display.submitFrame();
 			// Control
 			if(GLFW.glfwWindowShouldClose(display.window)){
 				running = false;
