@@ -1,8 +1,11 @@
 package systems;
 
+import java.util.HashMap;
+
 import bus.Message;
 import bus.MessageBus;
 import bus.Recipients;
+import components.Window;
 import logic.EntityDatabase;
 import logic.EntityDatabase.ComponentType;
 import tags.Component;
@@ -13,10 +16,27 @@ public class GUISystem extends AbstractSystem {
 	
 	private final UIManager uiManager;
 	
+	private final HashMap<Integer, Window> windows = new HashMap<>();
+	
 	public GUISystem(EntityDatabase entityDB, UIManager uiManager) {
 		super(entityDB);
 		
 		this.uiManager = uiManager;
+		
+		// Initialize GUI Windows
+		final Window characterInfo = new Window();
+		characterInfo.setPosition(0.1f, 0.1f);
+		characterInfo.setSize(0.2f, 0.2f);
+		characterInfo.setBorderWidth(0.03f);
+		uiManager.addComponent(characterInfo);
+		windows.put(TOGGLE_CHARACTER_INFO, characterInfo);
+		
+		final Window inventory = new Window();
+		inventory.setPosition(1.0f, 0.1f);
+		inventory.setSize(0.2f, 0.2f);
+		inventory.setBorderWidth(0.03f);
+		uiManager.addComponent(inventory);
+		windows.put(TOGGLE_INVENTORY, inventory);
 	}
 
 	@Override
@@ -33,8 +53,7 @@ public class GUISystem extends AbstractSystem {
 
 	@Override
 	public void update() {
-		// TODO Auto-generated method stub
-		
+		uiManager.render();
 	}
 	
 	public static final int TOGGLE_CHARACTER_INFO = 0;
@@ -45,7 +64,22 @@ public class GUISystem extends AbstractSystem {
 		while((message = MessageBus.getInstance().getNextMessage(Recipients.GUI_SYSTEM)) != null) {
 			final Object[] args = message.getArgs();
 			switch(message.getBehaviorID()) {
-			
+			case TOGGLE_CHARACTER_INFO: 
+				if(windows.get(TOGGLE_CHARACTER_INFO).isVisible()) {
+					windows.get(TOGGLE_CHARACTER_INFO).setVisible(false);
+					Logger.INFO.log("Hide Character Info");
+				} else {
+					windows.get(TOGGLE_CHARACTER_INFO).setVisible(true);
+					Logger.INFO.log("Show Character Info");
+				}
+				break;
+			case TOGGLE_INVENTORY:
+				if(windows.get(TOGGLE_INVENTORY).isVisible()) {
+					windows.get(TOGGLE_INVENTORY).setVisible(false);
+				} else {
+					windows.get(TOGGLE_INVENTORY).setVisible(true);
+				}
+				break;
 			default: Logger.ERROR.log("GUI System doesn't recognize this behavior ID: " + message.getBehaviorID()); 
 			}
 		}

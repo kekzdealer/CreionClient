@@ -1,24 +1,42 @@
 package ui;
 
 import java.util.HashSet;
-import java.util.Iterator;
+import java.util.Set;
+
+import graphics.Shape;
+import graphics.Texture;
 
 public class ComponentRenderData {
 	
-	private final HashSet<ComponentElement> elements = new HashSet<>();
 	private final HashSet<ComponentRenderData> children = new HashSet<>();
 	
-	public ComponentRenderData(ComponentElement... element) {
-		for(ComponentElement e : element) {
-			elements.add(e);
-		}
+	private final Shape shape;
+	private final Texture texture;
+	private final float borderWidth;
+	
+	public ComponentRenderData(Shape shape, Texture texture, float borderWidth) {
+		this.shape = shape;
+		this.texture = texture;
+		this.borderWidth = borderWidth;
+	}
+	
+	public Shape getShape() {
+		return shape;
+	}
+	
+	public Texture getTexture() {
+		return texture;
+	}
+	
+	public float getBorderWidth() {
+		return borderWidth;
 	}
 	
 	public void addChildren(ComponentRenderData child) {
 		children.add(child);
 	}
 	
-	public HashSet<ComponentRenderData> getChildren(){
+	private Set<ComponentRenderData> getChildren(){
 		return children;
 	}
 	
@@ -26,36 +44,17 @@ public class ComponentRenderData {
 		return (children.size() == 0) ? false : true;
 	}
 	
-	/**
-	 * Recursively accumulate all sub-components render elements.
-	 */
-	private void elementAccumulator(HashSet<ComponentElement> acc, ComponentRenderData child) {
+	private void accumulate(Set<ComponentRenderData> acc, ComponentRenderData child) {
 		if(child.hasChildren()) {
-			acc.addAll(elements);
 			for(ComponentRenderData c : child.getChildren()) {
-				elementAccumulator(acc, c);
+				c.accumulate(acc, c);
 			}
 		}
 	}
 	
-	/**
-	 * Returns this components render elements, as well as all it's children's
-	 * render elements.
-	 */
-	public HashSet<ComponentElement> getElements() {
-		final HashSet<ComponentElement> result = new HashSet<>();
-		for(ComponentRenderData child : children) {
-			elementAccumulator(result, child);
-		}
-		return elements;
-	}
-	
-	/**
-	 * Returns only the first render element and ignores potential children's data. </br>
-	 * Used for progress bars.
-	 */
-	public  ComponentElement getElement() {
-		final Iterator<ComponentElement> i = elements.iterator();
-		return i.next();
+	public Set<ComponentRenderData> getAllData(){
+		final HashSet<ComponentRenderData> acc = new HashSet<>();
+		accumulate(acc, this);
+		return acc;
 	}
 }

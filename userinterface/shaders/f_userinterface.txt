@@ -9,6 +9,8 @@ uniform float borderWidth;
 
 void main(){
 	
+	out_Color = texture(diffuse, pass_texCoords);
+	return;
 	if(pass_texCoords.x <= borderWidth || pass_texCoords.x > (1.0 - borderWidth)) {
 		// left and right borders
 		out_Color = vec4(0.0, 0.0, 0.0, 1.0);

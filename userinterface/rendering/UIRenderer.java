@@ -14,16 +14,17 @@ import components.ProgressBar;
 import graphics.Shape;
 import graphics.Texture;
 import ui.ComponentElement;
+import ui.ComponentRenderData;
 
 public class UIRenderer {
 	
 	private final UIShader uiShader = new UIShader();
 	private final ProgressBarShader progressBarShader = new ProgressBarShader();
 	
-	private final UIFrameBuffer fbo;
+	private final UIFrameBuffer fbo = null;
 	
 	public UIRenderer(int width, int height) {
-		fbo = new UIFrameBuffer(width, height);
+		//fbo = new UIFrameBuffer(width, height);
 	}
 	
 	/**
@@ -89,7 +90,7 @@ public class UIRenderer {
 	/**
 	 * Renders a single UI element.
 	 */
-	public void renderElement(ComponentElement element) {
+	public void renderElement(ComponentRenderData element) {
 		uiShader.start();
 		GL30.glBindVertexArray(element.getShape().getVaoID());
 		GL20.glEnableVertexAttribArray(0);

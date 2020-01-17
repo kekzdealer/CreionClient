@@ -7,7 +7,6 @@ import org.joml.Vector2f;
 import org.joml.Vector2fc;
 
 import components.Component;
-import ui.ComponentElement;
 import ui.ComponentRenderData;
 
 /**

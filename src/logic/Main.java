@@ -21,7 +21,7 @@ import utility.Logger;
 
 public class Main implements Runnable {
 	
-	private static final int TARGET_FPS = 60;
+	private static final int TARGET_FPS = 1;
 
 	private static boolean running = false;
 	
@@ -109,7 +109,6 @@ public class Main implements Runnable {
 			try {
 				final long sleepyTime = (long) Math.max(0, (1000 / TARGET_FPS) - FRAME_TIME);
 				Thread.sleep(sleepyTime);
-				Logger.INFO.log("Slept for: " + sleepyTime);
 			} catch(InterruptedException e) {
 				Logger.ERROR.log("Main thread was interrupted while sleeping");
 				e.printStackTrace(Logger.ERROR.getPrintStream());

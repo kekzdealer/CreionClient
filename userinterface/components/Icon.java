@@ -19,24 +19,19 @@ public class Icon extends Component {
 		if(super.renderDataCache != null) {
 			return super.renderDataCache;
 		} else {
-			// Dimensions
-			final ComponentElement body = new ComponentElement(
-					super.getWidth(), super.getHeight());
 			
 			final ShapeFactory sf = ShapeFactory.getInstance();
 			final TextureFactory tf = TextureFactory.getIntance();
 			
-			// Shapes
-			body.setShape(sf.createQuad(body.getWidth(), body.getHeight()));
-						
-			// Textures
-			body.setTexture(icon);
+			final ComponentRenderData data = new ComponentRenderData(
+					sf.createQuad(super.getWidth(), super.getHeight()),
+					tf.createTexture(TEXTURE_BODY),
+					super.getBorderWidth());
 			
-			// Finalize
-			final ComponentRenderData data = new ComponentRenderData(body);
 			for(Component child : super.getChildren()) {
 				data.addChildren(child.getComponentRenderData());
 			}
+			
 			super.renderDataCache = data;
 			return super.renderDataCache;
 		}
