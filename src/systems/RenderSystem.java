@@ -110,24 +110,27 @@ public class RenderSystem extends AbstractSystem {
 			GL30.glBindVertexArray(0);
 		}
 		
-		// Render UI frame buffer texture from UIManager here later
-		gameShader.start();
-		gameShader.uploadProjection(projectionMatrix);
-		GL30.glBindVertexArray(renderComponentResourceManager.getGUICarrierQuad().getVaoID());
-		GL20.glEnableVertexAttribArray(0);
-		GL20.glEnableVertexAttribArray(1);
-		GL13.glActiveTexture(GL13.GL_TEXTURE0);
-		GL11.glBindTexture(GL11.GL_TEXTURE_2D, uiManager.getUITexture());
-		Logger.INFO.log("Rendering FBO textureID: " + uiManager.getUITexture());
-		gameShader.uploadTexture(0); // Same logic as above
-		gameShader.uploadTransformation(new Matrix4f().translate(-1.0f, 1.0f, 0.0f));
-		GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, renderComponentResourceManager.getGUICarrierQuad().getVertexCount());
-		gameShader.stop();
-		GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
-		GL20.glDisableVertexAttribArray(0);
-		GL20.glDisableVertexAttribArray(1);
-		GL30.glBindVertexArray(0);
-
+		// TODO debug var
+		final boolean doRenderUI = true;
+		if(doRenderUI) {
+			// Render UI frame buffer texture from UIManager here later
+			gameShader.start();
+			gameShader.uploadProjection(projectionMatrix);
+			GL30.glBindVertexArray(uiManager.getUICarrier().getVaoID());
+			GL20.glEnableVertexAttribArray(0);
+			GL20.glEnableVertexAttribArray(1);
+			GL13.glActiveTexture(GL13.GL_TEXTURE0);
+			GL11.glBindTexture(GL11.GL_TEXTURE_2D, uiManager.getUITexture());
+			Logger.INFO.log("Rendering FBO textureID: " + uiManager.getUITexture());
+			gameShader.uploadTexture(0); // Same logic as above
+			gameShader.uploadTransformation(new Matrix4f().translate(-1.0f, -1.0f, 0.0f));
+			GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, uiManager.getUICarrier().getVertexCount());
+			gameShader.stop();
+			GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
+			GL20.glDisableVertexAttribArray(0);
+			GL20.glDisableVertexAttribArray(1);
+			GL30.glBindVertexArray(0);			
+		}
 		// Finalize
 		display.submitFrame();
 	}

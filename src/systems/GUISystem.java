@@ -74,10 +74,8 @@ public class GUISystem extends AbstractSystem {
 			case TOGGLE_CHARACTER_INFO: 
 				if(windows.get(TOGGLE_CHARACTER_INFO).isVisible()) {
 					windows.get(TOGGLE_CHARACTER_INFO).setVisible(false);
-					Logger.INFO.log("Hide Character Info");
 				} else {
 					windows.get(TOGGLE_CHARACTER_INFO).setVisible(true);
-					Logger.INFO.log("Show Character Info");
 				}
 				break;
 			case TOGGLE_INVENTORY:

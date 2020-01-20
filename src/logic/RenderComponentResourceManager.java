@@ -229,13 +229,4 @@ public class RenderComponentResourceManager implements AutoCloseable {
 		}
 	}
 	
-	/**
-	 * The GUI Frame Buffer Object's texture will be rendered onto this quad.
-	 * @return a screen filling quad
-	 */
-	public Shape getGUICarrierQuad() {
-		return guiCarrierQuad;
-	}
-	
-	
 }

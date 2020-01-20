@@ -3,6 +3,8 @@ package ui;
 import java.util.HashSet;
 
 import components.ProgressBar;
+import components.ResourceManager;
+import graphics.Shape;
 import rendering.UIRenderer;
 import utility.Logger;
 import components.Component;
@@ -10,6 +12,7 @@ import components.Component;
 public class UIManager {
 	
 	private final HashSet<Component> components = new HashSet<>();
+	private final ResourceManager resourceManager = new ResourceManager();
 	private final UIRenderer renderer;
 		
 	public UIManager(int width, int height) {
@@ -19,6 +22,7 @@ public class UIManager {
 	public void cleanUp() {
 		// TODO implement UIManager.cleanUp()
 		renderer.destroy();
+		resourceManager.close();
 	}
 	
 	/**
@@ -38,7 +42,6 @@ public class UIManager {
 			if(component.isDirty()) {
 				// Newly hidden components are erased
 				if(!component.isVisible()) {
-					Logger.INFO.log("Erasing a Component");
 					for(ComponentRenderData element : component.getComponentRenderData().withChildDataAsSet()) {
 						Logger.INFO.log("Erasing a component");
 						renderer.eraseComponent(element);
@@ -68,5 +71,12 @@ public class UIManager {
 	 */
 	public int getUITexture() {
 		return renderer.getUITexture();
+	}
+	
+	/**
+	 * Call to retrieve the UI carrier shape object
+	 */
+	public Shape getUICarrier() {
+		return resourceManager.getGUICarrier();
 	}
 }
