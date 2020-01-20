@@ -7,16 +7,14 @@ import org.lwjgl.glfw.GLFW;
 
 import bus.MessageBus;
 import bus.Recipients;
+import components.UIManager;
 import graphics.Display;
-import graphics.ShapeFactory;
-import graphics.TextureFactory;
 import input.InputMapper;
 import networking.NetworkConnector;
 import systems.EntitySystem;
 import systems.GUISystem;
 import systems.RenderSystem;
 import systems.TransformationSystem;
-import ui.UIManager;
 import utility.Logger;
 
 public class Main implements Runnable {
@@ -113,8 +111,6 @@ public class Main implements Runnable {
 				e.printStackTrace(Logger.ERROR.getPrintStream());
 			}
 		}
-		ShapeFactory.getInstance().destroyCreatedData();
-		TextureFactory.getIntance().destroyCreatedData();
 		display.destroy();
 		if(networkConnector != null && networkConnector.isConnected()) {
 			try {

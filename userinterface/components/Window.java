@@ -1,14 +1,12 @@
-package components;
 
-import graphics.ShapeFactory;
-import graphics.TextureFactory;
+package components;
 
 import components.Component;
 import ui.ComponentRenderData;
 
 public class Window extends Component {
 	
-	private static final String TEXTURE_BODY = "window_backdrop";
+	private static final String TEXTURE_BODY = "window_background";
 	
 	public Window() {
 		super();
@@ -21,12 +19,10 @@ public class Window extends Component {
 			return super.renderDataCache;
 		} else {
 			
-			final ShapeFactory sf = ShapeFactory.getInstance();
-			final TextureFactory tf = TextureFactory.getIntance();
-			
+			final ResourceManager rm = ResourceManager.getInstance();
 			final ComponentRenderData data = new ComponentRenderData(
-					sf.createQuad(super.getWidth(), super.getHeight()),
-					tf.createTexture(TEXTURE_BODY),
+					rm.createCarrier(super.getWidth(), super.getHeight()),
+					rm.loadCachedTexture(TEXTURE_BODY),
 					super.getBorderWidth(),
 					super.positionComponent(this));
 			

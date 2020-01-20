@@ -1,7 +1,5 @@
 package components;
 
-import graphics.ShapeFactory;
-import graphics.TextureFactory;
 import components.Component;
 import ui.ComponentRenderData;
 
@@ -9,18 +7,21 @@ public class Button extends Component {
 	
 	private static final String TEXTURE_BODY = "button";
 	
+	public Button() {
+		super();
+	}
+	
 	@Override
 	public ComponentRenderData getComponentRenderData() {
 		if(super.renderDataCache != null) {
+			super.markClean();
 			return super.renderDataCache;
 		} else {
 			
-			final ShapeFactory sf = ShapeFactory.getInstance();
-			final TextureFactory tf = TextureFactory.getIntance();
-			
+			final ResourceManager rm = ResourceManager.getInstance();
 			final ComponentRenderData data = new ComponentRenderData(
-					sf.createQuad(super.getWidth(), super.getHeight()),
-					tf.createTexture(TEXTURE_BODY),
+					rm.createCarrier(super.getWidth(), super.getHeight()),
+					rm.loadCachedTexture(TEXTURE_BODY),
 					super.getBorderWidth(),
 					super.positionComponent(this));
 			
@@ -29,6 +30,7 @@ public class Button extends Component {
 			}
 			
 			super.renderDataCache = data;
+			super.markClean();
 			return super.renderDataCache;
 		}
 	}

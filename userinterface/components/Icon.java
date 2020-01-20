@@ -1,8 +1,6 @@
 package components;
 
-import graphics.ShapeFactory;
 import graphics.Texture;
-import graphics.TextureFactory;
 import ui.ComponentRenderData;
 
 public class Icon extends Component {
@@ -19,15 +17,14 @@ public class Icon extends Component {
 	@Override
 	public ComponentRenderData getComponentRenderData() {
 		if(super.renderDataCache != null) {
+			super.markClean();
 			return super.renderDataCache;
 		} else {
 			
-			final ShapeFactory sf = ShapeFactory.getInstance();
-			final TextureFactory tf = TextureFactory.getIntance();
-			
+			final ResourceManager rm = ResourceManager.getInstance();
 			final ComponentRenderData data = new ComponentRenderData(
-					sf.createQuad(super.getWidth(), super.getHeight()),
-					tf.createTexture(iconName),
+					rm.createCarrier(super.getWidth(), super.getHeight()),
+					rm.loadCachedTexture(iconName),
 					super.getBorderWidth(),
 					super.positionComponent(this));
 			
@@ -36,6 +33,7 @@ public class Icon extends Component {
 			}
 			
 			super.renderDataCache = data;
+			super.markClean();
 			return super.renderDataCache;
 		}
 	}

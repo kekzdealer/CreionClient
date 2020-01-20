@@ -25,20 +25,21 @@ import utility.Logger;
 public class ResourceManager implements AutoCloseable {
 	
 	private static final String RESOURCE_PATH = "userinterface/textures/";
+	private static ResourceManager instance;
 	
 	private final HashSet<EntityPreset> presets = new HashSet<>();
 	
 	private final HashMap<String, Integer> texturesCache = new HashMap<>();
 	private final HashMap<String, Texture> textures = new HashMap<>();
 	
-	private final HashMap<String, Shape> carriers = new HashMap<>();
+	private final HashSet<Shape> carriers = new HashSet<>();
 	
 	private final Texture defaultTexture;
 	private final Texture eraserTexture;
 	
 	private Shape guiCarrier;
 	
-	public ResourceManager() {
+	private ResourceManager() {
 		presets.add(new EntityPreset("window_background", "window_background"));
 		presets.add(new EntityPreset("progressbar_red", "progressbar_background_red"));
 		presets.add(new EntityPreset("progressbar_green", "progressbar_foreground_green"));
@@ -47,6 +48,13 @@ public class ResourceManager implements AutoCloseable {
 		eraserTexture = createDefaultTextures(false);
 		
 		guiCarrier = createCarrier(2.0f, 2.0f);
+	}
+	
+	protected static ResourceManager getInstance() {
+		if(instance == null) {
+			instance = new ResourceManager();
+		}
+		return instance;
 	}
 	
 	private Texture loadTextureFromDisk(String fileName) {		
@@ -119,7 +127,7 @@ public class ResourceManager implements AutoCloseable {
 		return new Texture(textureID);
 	}
 	
-	private Shape createCarrier(float width, float height) {
+	protected Shape createCarrier(float width, float height) {
 		// init data
 		final float[] vertices = {
 				// Left bottom triangle
@@ -180,7 +188,7 @@ public class ResourceManager implements AutoCloseable {
 	/**
 	 * Returns a screen filling rectangle that can be used to render the GUI FBO texture onto.
 	 */
-	public Shape getGUICarrier() {
+	protected Shape getGUICarrier() {
 		return guiCarrier;
 	}
 	
@@ -192,9 +200,9 @@ public class ResourceManager implements AutoCloseable {
 			GL15.glDeleteBuffers(vbo);
 		}
 		// Delete carrier meshes
-		for(Entry<String, Shape> e : carriers.entrySet()) {
-			GL30.glDeleteVertexArrays(e.getValue().getVaoID());
-			for(int vbo : e.getValue().getVboIDs()) {
+		for(Shape shape : carriers) {
+			GL30.glDeleteVertexArrays(shape.getVaoID());
+			for(int vbo : shape.getVboIDs()) {
 				GL15.glDeleteBuffers(vbo);
 			}
 		}

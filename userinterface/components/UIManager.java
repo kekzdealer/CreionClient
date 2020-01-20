@@ -1,22 +1,20 @@
-package ui;
+package components;
 
 import java.util.HashSet;
 
-import components.ProgressBar;
-import components.ResourceManager;
 import graphics.Shape;
 import rendering.UIRenderer;
+import ui.ComponentRenderData;
 import utility.Logger;
-import components.Component;
 
 public class UIManager {
 	
 	private final HashSet<Component> components = new HashSet<>();
-	private final ResourceManager resourceManager = new ResourceManager();
+	private final ResourceManager resourceManager = ResourceManager.getInstance();
 	private final UIRenderer renderer;
 		
 	public UIManager(int width, int height) {
-		renderer = new UIRenderer(width, height);
+		renderer = new UIRenderer(resourceManager, width, height);
 	}
 	
 	public void cleanUp() {

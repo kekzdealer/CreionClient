@@ -5,11 +5,11 @@ import java.util.HashMap;
 import bus.Message;
 import bus.MessageBus;
 import bus.Recipients;
+import components.UIManager;
 import components.Window;
 import logic.EntityDatabase;
 import logic.EntityDatabase.ComponentType;
 import tags.Component;
-import ui.UIManager;
 import utility.Logger;
 
 public class GUISystem extends AbstractSystem {
