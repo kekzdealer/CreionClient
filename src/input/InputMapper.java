@@ -58,11 +58,11 @@ public class InputMapper {
 		}
 		
 		final Vector2ic moveDir = input.pollMoveDirection();
-		final float speedScalar = 0.015f;
+		final float speedScalar = 0.085f;
 		messageBus.messageSystem(Recipients.TRANSFORMATION_SYSTEM, TransformationSystem.TRANSLATE, 0, moveDir.x() * speedScalar, moveDir.y() * speedScalar, 0.0f);
 		
 		if(input.doAbility()) {
-			messageBus.messageSystem(Recipients.ENTITY_SYSTEM, EntitySystem.SPAWN, "wheat", new Matrix4f().translate(0.0f, 0.0f, -1.0f));
+			messageBus.messageSystem(Recipients.ENTITY_SYSTEM, EntitySystem.SPAWN, "green_magic_circle", new Matrix4f().translate(0.0f, 0.0f, -1.0f).scale(3.0f));
 		}
 		
 		for(int guiWindow : input.toggleGUIWindow()) {

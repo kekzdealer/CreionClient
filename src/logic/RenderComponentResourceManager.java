@@ -43,6 +43,9 @@ public class RenderComponentResourceManager implements AutoCloseable {
 		presets.add(new EntityPreset("wheat", "wheat64"));
 		presets.add(new EntityPreset("fireball", "fireball16"));
 		presets.add(new EntityPreset("ice_shard", "ice_shard16"));
+		presets.add(new EntityPreset("red_magic_circle", "red_magic_circle64"));
+		presets.add(new EntityPreset("yellow_magic_circle", "yellow_magic_circle64"));
+		presets.add(new EntityPreset("green_magic_circle", "green_magic_circle64"));
 		
 		defaultQuad = createDefaultQuad(0.2f, 0.2f);
 		defaultTexture = createDefaultTexture();
