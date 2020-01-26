@@ -29,8 +29,8 @@ CREATE TABLE entity_component_mapping(
 
 CREATE TABLE component_data_position(
 	component_data_id INT PRIMARY KEY,
-	x_position FLOAT,
-	y_position FLOAT,
+	x_position INT,
+	y_position INT,
 );
 
 CREATE TABLE component_data_status(
@@ -49,8 +49,8 @@ CREATE TABLE component_inventory(
 
 CREATE TABLE component_template_position(
 	template_id INT,
-	x_position FLOAT,
-	y_position FLOAT
+	x_position INT,
+	y_position INT
 );
 
 // ITEM TABLES
