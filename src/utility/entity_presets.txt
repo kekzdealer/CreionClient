@@ -5,7 +5,8 @@ CREATE TABLE templates(
 
 CREATE TABLE template_component_mapping(
 	template_id INT,
-	component_id INT
+	component_id INT,
+	FOREIGN KEY(template_id) REFERENCES templates(template_id)
 );
  
 CREATE TABLE components(
@@ -22,12 +23,14 @@ CREATE TABLE entities(
 CREATE TABLE entity_component_mapping(
 	entity_id INT,
 	component_id INT,
+	component_data_id INT
+	FOREIGN KEY(entity_id) REFERENCES entities(entity_id)
 );
 
 CREATE TABLE component_data_position(
 	component_data_id INT PRIMARY KEY,
-	x_position FLOAT,
-	y_position FLOAT,
+	x_position INT,
+	y_position INT,
 );
 
 CREATE TABLE component_data_status(
@@ -46,8 +49,8 @@ CREATE TABLE component_inventory(
 
 CREATE TABLE component_template_position(
 	template_id INT,
-	x_position FLOAT,
-	y_position FLOAT
+	x_position INT,
+	y_position INT
 );
 
 // ITEM TABLES
@@ -59,7 +62,8 @@ CREATE TABLE items(
 
 CREATE TABLE inventory(
 	inventory_id INT,
-	item_id INT
+	item_id INT,
+	FOREIGN KEY(item_id) REFERENCES items(item_id)
 );
 
 

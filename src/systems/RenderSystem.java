@@ -111,7 +111,7 @@ public class RenderSystem extends AbstractSystem {
 		}
 		
 		// TODO debug var
-		final boolean doRenderUI = true;
+		final boolean doRenderUI = false;
 		if(doRenderUI) {
 			// Render UI frame buffer texture from UIManager here later
 			gameShader.start();

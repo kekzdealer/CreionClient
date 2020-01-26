@@ -1,0 +1,43 @@
+server SPAWN (template_id INT | human_readable_name CHAR)
+	- (Retrieve template_id for human_readable_name)
+	- Allocate new entity_id and set entities.human_readable_name to templates.human_readable_name 
+	- Get all component_id where template_id matches
+	- Insert entity_id & component_id tuples into entity_component_mapping for every component_id
+	- Get all table_name for each component_id from components
+	- For each table_name
+		- Get component allocation template data from corresponding component_data_template table
+		- Allocate new component_data_id in component_data table and insert data
+		- Fill in component_data_id field in entity_component_mapping for current component_id
+
+network SCAN (x_position INT, y_position INT, x_range INT, y_range INT)
+	- Select all x_position, y_position tuples from component_data table for position component
+	- Filter component_data_id where x_position, y_position within rectangle defined by params
+	- Map all resulting component_data_id to their entity_id
+
+
+network INTERACT
+	
+network ABILITY (entity_id INT, ability_id INT | human_readable_name CHAR)
+	
+ABILITIES
+	- range INT | self (-1)
+	- radius INT
+	- charges INT
+	- power INT
+	- type INT FOREIGN KEY
+	
+CREATE TABLE IF NOT EXISTS abilities(
+	ability_id INT PRIMARY KEY,
+	human_readable_name CHAR,
+	range INT,
+	radius INT,
+	charges INT,
+	power INT,
+	effect_type INT
+	FOREIGN KEY(effect_type) REFERENCES effect_types(effect_type)
+);
+
+CREATE TABLE IF NOT EXISTS effect_types(
+	effect_type INT PRIMARY KEY,
+	human_readable_name CHAR
+);

@@ -123,7 +123,9 @@ public class ResourceManager implements AutoCloseable {
 		GL11C.glTexImage2D(GL11C.GL_TEXTURE_2D, 0, dataFormat, 2, 2, 0, dataFormat, GL11C.GL_UNSIGNED_BYTE, data);
 		
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
-		
+		if(defaultOrEraser) {
+			Logger.INFO.log("Default texture is: " + textureID);
+		}
 		return new Texture(textureID);
 	}
 	
@@ -166,7 +168,9 @@ public class ResourceManager implements AutoCloseable {
 		storeDataInAttributeList(1, 2, tBuffer);
 		GL30.glBindVertexArray(0);
 		
-		return new Shape(vaoID, vertices.length / 3, vbo0, vbo1);
+		final Shape carrier = new Shape(vaoID, vertices.length / 3, vbo0, vbo1); 
+		carriers.add(carrier);
+		return carrier;
 	}
 	
 	private void storeDataInAttributeList(int attributeID, int dimensions, FloatBuffer data) {

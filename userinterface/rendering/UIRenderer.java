@@ -70,6 +70,8 @@ public class UIRenderer {
 	 * Renders a single UI element.
 	 */
 	public void renderComponent(ComponentRenderData element) {
+		Logger.INFO.log("Rendering window with VAO ID: " + element.getShape().getVaoID());
+		Logger.INFO.log("Rendering window with Texture ID: " + element.getTexture().getTextureID());
 		uiShader.start();
 		uiShader.uploadBorderWidth(element.getBorderWidth());
 		GL30.glBindVertexArray(element.getShape().getVaoID());
@@ -99,6 +101,7 @@ public class UIRenderer {
 		GL20.glEnableVertexAttribArray(1);
 		GL13.glActiveTexture(GL13.GL_TEXTURE0);
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, resourceManager.getEraserTexture().getTextureID());
+		Logger.INFO.log("Erasing with Texture: " + resourceManager.getEraserTexture().getTextureID());
 		uiShader.uploadTexture(0);
 		uiShader.uploadTransformation(element.getTranslation());
 		GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, element.getShape().getVertexCount());
