@@ -19,8 +19,8 @@ import logic.EntityDatabase.ComponentType;
 import tags.CRender;
 import tags.CTransformation;
 import tags.Component;
+import utility.CMath;
 import utility.Logger;
-import utility.Projector;
 import logic.RenderComponentResourceManager;
 
 public class RenderSystem extends AbstractSystem {
@@ -47,7 +47,7 @@ public class RenderSystem extends AbstractSystem {
 		
 		GL11C.glViewport(0, 0, display.getWidth(), display.getHeight());
 		//projectionMatrix = new Matrix4f();
-		projectionMatrix = Projector.getProjectionMatrix(-1.6f, 1.6f, 0.9f, -0.9f, -128.0f, 128.0f);
+		projectionMatrix = CMath.projectOrthogonal(-1.6f, 1.6f, 0.9f, -0.9f, -128.0f, 128.0f);
 		
 		// Back-face culling
 		GL11C.glEnable(GL11C.GL_CULL_FACE);
