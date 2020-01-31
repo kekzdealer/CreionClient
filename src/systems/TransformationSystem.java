@@ -9,6 +9,7 @@ import logic.EntityDatabase;
 import logic.EntityDatabase.ComponentType;
 import tags.CTransformation;
 import tags.Component;
+import utility.CMath;
 import utility.Logger;
 
 public class TransformationSystem extends AbstractSystem {
@@ -46,7 +47,8 @@ public class TransformationSystem extends AbstractSystem {
 		}
 	}
 
-	public static final int TRANSLATE = 0;
+	public static final int TRANSLATE = 0; // entity_id, float x, float y, float z
+	public static final int MOVE = 1; // entity_id, long x_units, long y_units
 	@Override
 	public void processMessages() {
 		Message message = null;
@@ -54,7 +56,16 @@ public class TransformationSystem extends AbstractSystem {
 			final Object[] args = message.getArgs();
 			switch(message.getBehaviorID()) {
 			case TRANSLATE: 
-				super.entityDB.getTransformationComponent((int) args[0]).get().translate((float) args[1], (float) args[2], (float) args[3]);
+				super.entityDB.getTransformationComponent((int) args[0]).get().translate(
+						(float) args[1], 
+						(float) args[2], 
+						(float) args[3]);
+				break;
+			case MOVE:
+				super.entityDB.getTransformationComponent((int) args[0]).get().translate(
+						CMath.distanceUnitsToFloat((long) args[1]), 
+						CMath.distanceUnitsToFloat((long) args[2]), 
+						0.0f);
 				break;
 			default: Logger.ERROR.log("Transformation System doesn't recognize this behavior ID: " + message.getBehaviorID());
 			}
