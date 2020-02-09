@@ -115,7 +115,7 @@ public class RenderSystem extends AbstractSystem {
 		if(doRenderUI) {
 			// Render UI frame buffer texture from UIManager here later
 			gameShader.start();
-			gameShader.uploadProjection(projectionMatrix);
+			gameShader.uploadProjection(new Matrix4f());
 			GL30.glBindVertexArray(uiManager.getUICarrier().getVaoID());
 			GL20.glEnableVertexAttribArray(0);
 			GL20.glEnableVertexAttribArray(1);
