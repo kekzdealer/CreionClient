@@ -40,6 +40,7 @@ public class ResourceManager implements AutoCloseable {
 	private Shape guiCarrier;
 	
 	private ResourceManager() {
+		presets.add(new EntityPreset("cursor", "cursor"));
 		presets.add(new EntityPreset("window_background", "window_background"));
 		presets.add(new EntityPreset("progressbar_red", "progressbar_background_red"));
 		presets.add(new EntityPreset("progressbar_green", "progressbar_foreground_green"));

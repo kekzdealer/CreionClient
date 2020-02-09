@@ -34,6 +34,7 @@ import org.lwjgl.opengl.GL;
 import bus.MessageBus;
 import bus.Recipients;
 import systems.RenderSystem;
+import utility.Logger;
 
 public class Display {
 	

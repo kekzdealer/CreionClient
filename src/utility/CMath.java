@@ -6,6 +6,36 @@ import org.joml.Matrix4fc;
 public class CMath {
 	
 	/**
+	 * Combines Math.min() & Math.max()
+	 * @param x
+	 * 			Value to clamp
+	 * @param min
+	 * 			Lower limit
+	 * @param max
+	 * 			Upper limit
+	 * @return
+	 * 			Value clamped to range between the upper and lower limit
+	 */
+	public static float clamp(float x, float min, float max) {
+		return x >= 0.0f ? Math.min(max, x) : Math.max(min, x);
+	}
+	
+	/**
+	 * Returns true if x element of [min, max]
+	 * @param x
+	 * 			Value to test
+	 * @param min
+	 * 			Lower limit
+	 * @param max
+	 * 			Upper limit
+	 * @return
+	 * 			x element of [min, max]
+	 */
+	public static boolean between(float x, float min, float max) {
+		return x >= min && x <= max ? true : false;
+	}
+	
+	/**
 	 * Converts integer distance units used by the game logic
 	 * to OpenGL compatible vertex locations
 	 */

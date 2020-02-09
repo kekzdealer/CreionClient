@@ -20,7 +20,7 @@ import utility.Logger;
 
 public class Main implements Runnable {
 	
-	private static final int TARGET_FPS = 1;
+	private static final int TARGET_FPS = 60;
 
 	private static boolean running = false;
 	

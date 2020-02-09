@@ -1,6 +1,5 @@
 package input;
 
-import java.nio.DoubleBuffer;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -8,20 +7,26 @@ import org.joml.Vector2f;
 import org.joml.Vector2fc;
 import org.joml.Vector2i;
 import org.joml.Vector2ic;
-import org.lwjgl.BufferUtils;
 import org.lwjgl.glfw.GLFW;
 
 import graphics.Display;
 
 public class SourceMouse implements InputSourceI {
 	
-	private boolean doInteract = false;
-	private final Vector2f prevMousePos = new Vector2f();
-
 	private final Display display;
 
-	public SourceMouse(Display disp) {
-		this.display = disp;
+	private boolean doInteract = false;
+	
+	private final Vector2f mousePos = new Vector2f();
+	
+	public SourceMouse(Display display) {
+		this.display = display;
+		
+		// Hide system cursor when inside the game window
+		GLFW.glfwSetInputMode(display.window, GLFW.GLFW_CURSOR, GLFW.GLFW_CURSOR_NORMAL);
+		GLFW.glfwSetCursorPosCallback(display.window, (window, xpos, ypos) ->{
+			mousePos.set((float) xpos, (float) ypos);
+		});
 	}
 	
 	@Override
@@ -31,18 +36,13 @@ public class SourceMouse implements InputSourceI {
 
 	@Override
 	public Vector2fc pollCursorMoveDirection() {
-		final DoubleBuffer b1 = BufferUtils.createDoubleBuffer(1);
-		final DoubleBuffer b2 = BufferUtils.createDoubleBuffer(1);
-		GLFW.glfwGetCursorPos(display.window, b1, b2);
 		
-		// yaw -> x, pitch -> y, roll -> z
-		final Vector2f ret = new Vector2f((float) b1.get(0), (float) b2.get(0));
-		ret.sub(prevMousePos);
-		ret.mul(new Vector2f(1.0f, -1.0f));
-
-		prevMousePos.set((float) b1.get(0), (float) b2.get(0));
-
-		return ret;
+		final Vector2fc mapped = new Vector2f(
+				mousePos.x() / display.getWidth() * 2.0f - 1.0f,
+				mousePos.y() / display.getHeight() * -2.0f + 1.0f // -2.0f to invert the y axis
+				);
+		
+		return mapped;
 	}
 
 	@Override

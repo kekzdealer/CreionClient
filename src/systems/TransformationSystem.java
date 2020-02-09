@@ -49,6 +49,7 @@ public class TransformationSystem extends AbstractSystem {
 
 	public static final int TRANSLATE = 0; // entity_id, float x, float y, float z
 	public static final int MOVE = 1; // entity_id, long x_units, long y_units
+	public static final int SET = 2; // entity_id, long x_unit_pos, long y_unit_pos
 	@Override
 	public void processMessages() {
 		Message message = null;
@@ -66,6 +67,14 @@ public class TransformationSystem extends AbstractSystem {
 						CMath.distanceUnitsToFloat((long) args[1]), 
 						CMath.distanceUnitsToFloat((long) args[2]), 
 						0.0f);
+				break;
+			case SET:
+				super.entityDB.getTransformationComponent((int) args[0]).get().setTranslation(
+						//CMath.distanceUnitsToFloat((long) args[1]), 
+						//CMath.distanceUnitsToFloat((long) args[2]),
+						(float) args[1],
+						(float) args[2],
+						0.0f); 
 				break;
 			default: Logger.ERROR.log("Transformation System doesn't recognize this behavior ID: " + message.getBehaviorID());
 			}

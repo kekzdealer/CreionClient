@@ -56,14 +56,18 @@ public class GUISystem extends AbstractSystem {
 		uiManager.render();
 	}
 	
-	public static final int TOGGLE_CHARACTER_INFO = 0;
-	public static final int TOGGLE_INVENTORY = 1;
+	public static final int UPDATE_CURSOR_POSITION = 0;
+	public static final int TOGGLE_CHARACTER_INFO = 1;
+	public static final int TOGGLE_INVENTORY = 2;
 	@Override
 	public void processMessages() {
 		Message message = null;
 		while((message = MessageBus.getInstance().getNextMessage(Recipients.GUI_SYSTEM)) != null) {
 			final Object[] args = message.getArgs();
 			switch(message.getBehaviorID()) {
+			case UPDATE_CURSOR_POSITION:
+				// TODO args: xpos ypos
+				break;
 			case TOGGLE_CHARACTER_INFO: 
 				if(windows.get(TOGGLE_CHARACTER_INFO).isVisible()) {
 					windows.get(TOGGLE_CHARACTER_INFO).setVisible(false);
