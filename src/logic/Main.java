@@ -5,6 +5,7 @@ import java.io.IOException;
 import org.joml.Matrix4f;
 import org.lwjgl.glfw.GLFW;
 
+import bus.Message;
 import bus.MessageBus;
 import bus.Recipients;
 import components.UIManager;
@@ -19,15 +20,27 @@ import utility.Logger;
 
 public class Main implements Runnable {
 	
+	public static final int RESIZE_WINDOW = 0;
+	
 	private static final int TARGET_FPS = 1;
 
 	private static boolean running = false;
 	
-	private final String address;
-	private final int port;
+	// Engine parts
+	private final Display display;
+	private final MessageBus messageBus;
+	private NetworkConnector networkConnector; // TODO allow for this to be final and always have an instance
+	private final InputMapper inputMapper;
+	private final UIManager uiManager;
+	private final RenderComponentResourceManager renderComponentResourceManager;
 	
-	// TIME
-	public static float FRAME_TIME = 0;
+	private final EntitySystem entitySystem;
+	private final RenderSystem renderSystem;
+	private final TransformationSystem transformationSystem;
+	private final GUISystem guiSystem;
+	
+	// Time
+	private static float FRAME_TIME = 0;
 	private float frameBegin = 0;
 	
 	public static void main(String[] args) {
@@ -45,38 +58,47 @@ public class Main implements Runnable {
 	}
 	
 	public Main(String address, int port) {
-		this.address = address;
-		this.port = port;
-	}
-	
-	@Override
-	public void run() {
 		
 		// Window creation 
-		Display display = null;
 		display = new Display(1280, 720);
 		display.create();
 		
-		final MessageBus messageBus = MessageBus.getInstance();
-				
+		messageBus = MessageBus.getInstance();
+		
+		// TODO change this - see above todo
 		// Only make a NetworkConnector if an address and port was passed as arguments on startup
-		NetworkConnector networkConnector = null;
 		if(!address.equals("") && port >= 0) {
 			Logger.INFO.log("Acceptedd parameters: " + address + ":" + port);
 			networkConnector = new NetworkConnector(address, port);
 		}
 		
-		final InputMapper inputMapper = new InputMapper(display, messageBus);
-		final UIManager uiManager = new UIManager(display.getWidth(), display.getHeight());
+		inputMapper = new InputMapper(display, messageBus);
+		uiManager = new UIManager(display.getWidth(), display.getHeight());
+		renderComponentResourceManager = new RenderComponentResourceManager();
 		
-		final RenderComponentResourceManager renderComponentResourceManager = new RenderComponentResourceManager();
-		
-		final EntitySystem entitySystem = new EntitySystem();
-		final RenderSystem renderSystem = new RenderSystem(entitySystem.getEntityDB(), display, 
+		entitySystem = new EntitySystem();
+		renderSystem = new RenderSystem(entitySystem.getEntityDB(), display, 
 				renderComponentResourceManager, uiManager);
-		final TransformationSystem transformationSystem = new TransformationSystem(entitySystem.getEntityDB());
-		final GUISystem guiSystem = new GUISystem(entitySystem.getEntityDB(), uiManager);
+		transformationSystem = new TransformationSystem(entitySystem.getEntityDB());
+		guiSystem = new GUISystem(entitySystem.getEntityDB(), uiManager);
+		
 		entitySystem.setupSystems(renderSystem, transformationSystem, guiSystem);
+		
+	}
+	
+	private void processMessages() {
+		Message message = null;
+		while((message = MessageBus.getInstance().getNextMessage(Recipients.ENTITY_SYSTEM)) != null) {
+			final Object[] args = message.getArgs();
+			switch(message.getBehaviorID()) {
+			
+			default: Logger.ERROR.log("Main doesn't recognize this behavior ID: " + message.getBehaviorID());
+			}
+		}
+	}
+	
+	@Override
+	public void run() {
 		
 		// spawn player. has id = 0.
 		messageBus.messageSystem(Recipients.ENTITY_SYSTEM, EntitySystem.SPAWN, "mage", new Matrix4f());
@@ -84,6 +106,7 @@ public class Main implements Runnable {
 		while(running) {
 			frameBegin = (float) GLFW.glfwGetTime();
 			// Input
+			processMessages();
 			inputMapper.updateInput();
 			
 			// Logic
