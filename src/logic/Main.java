@@ -1,6 +1,7 @@
 package logic;
 
 import java.io.IOException;
+import java.util.HashMap;
 
 import org.joml.Matrix4f;
 import org.lwjgl.glfw.GLFW;
@@ -31,13 +32,21 @@ public class Main implements Runnable {
 	private float frameBegin = 0;
 	
 	public static void main(String[] args) {
-				
-		Main main;
-		if(args.length >= 2) {
-			main = new Main(args[0], Integer.parseInt(args[1]));		
-		} else {
-			main = new Main("", -1);
+		// Map runtime arguments
+		final HashMap<String, String> argMap = new HashMap<>();
+		for(String arg : args) {
+			String[] kv = arg.split("=");
+			if(kv.length > 1) {
+				argMap.put(kv[0], kv[1]);
+			} else {
+				argMap.put(kv[0], "");
+			}
 		}
+		
+		final String address = argMap.containsKey("address") ? argMap.get("address") : "";
+		final int port = (argMap.containsKey("port") && !argMap.get("port").equals("")) 
+				? Integer.parseInt(argMap.get("port")) : -1;
+		final Main main = new Main(address, port);
 		
 		final Thread gameloop = new Thread(main, "game loop");
 		running = true;

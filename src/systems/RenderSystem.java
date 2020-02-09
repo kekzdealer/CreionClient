@@ -134,13 +134,16 @@ public class RenderSystem extends AbstractSystem {
 		// Finalize
 		display.submitFrame();
 	}
-	
+		
+	public static final int WINDOW_RESIZE = 0;
 	@Override
 	public void processMessages() {
 		Message message = null;
 		while((message = MessageBus.getInstance().getNextMessage(Recipients.RENDER_SYSTEM)) != null) {
 			switch(message.getBehaviorID()) {
-			
+			case WINDOW_RESIZE: 
+				GL11C.glViewport(0, 0, display.getWidth(), display.getHeight());
+				break;
 			default: Logger.ERROR.log("Render System doesn't recognize this behavior ID: " + message.getBehaviorID());
 			}
 		}
