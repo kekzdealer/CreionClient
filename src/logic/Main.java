@@ -26,6 +26,7 @@ public class Main implements Runnable {
 	
 	private final String address;
 	private final int port;
+	private final boolean fullscreen;
 	
 	// TIME
 	public static float FRAME_TIME = 0;
@@ -42,20 +43,23 @@ public class Main implements Runnable {
 				argMap.put(kv[0], "");
 			}
 		}
-		
+		// Retrieve sensible values from argument map
 		final String address = argMap.containsKey("address") ? argMap.get("address") : "";
 		final int port = (argMap.containsKey("port") && !argMap.get("port").equals("")) 
 				? Integer.parseInt(argMap.get("port")) : -1;
-		final Main main = new Main(address, port);
-		
+		final boolean fullscreen = (argMap.containsKey("fullscreen") && !argMap.get("fullscreen").equals("")) 
+				? Boolean.parseBoolean(argMap.get("fullscreen")) : false;
+		// Start
+		final Main main = new Main(address, port, fullscreen);
 		final Thread gameloop = new Thread(main, "game loop");
 		running = true;
 		gameloop.start();
 	}
 	
-	public Main(String address, int port) {
+	public Main(String address, int port, boolean fullscreen) {
 		this.address = address;
 		this.port = port;
+		this.fullscreen = fullscreen;
 	}
 	
 	@Override
@@ -63,7 +67,11 @@ public class Main implements Runnable {
 		
 		// Window creation 
 		Display display = null;
-		display = new Display(1280, 720);
+		if(fullscreen) {
+			display = new Display(1920, 1080, fullscreen);			
+		} else {
+			display = new Display(1280, 720, fullscreen);
+		}
 		display.create();
 		
 		final MessageBus messageBus = MessageBus.getInstance();

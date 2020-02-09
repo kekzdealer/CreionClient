@@ -10,6 +10,7 @@ import static org.lwjgl.glfw.GLFW.GLFW_OPENGL_CORE_PROFILE;
 import static org.lwjgl.glfw.GLFW.GLFW_OPENGL_PROFILE;
 import static org.lwjgl.glfw.GLFW.GLFW_RESIZABLE;
 import static org.lwjgl.glfw.GLFW.GLFW_VISIBLE;
+import static org.lwjgl.glfw.GLFW.GLFW_DECORATED;
 import static org.lwjgl.glfw.GLFW.glfwCreateWindow;
 import static org.lwjgl.glfw.GLFW.glfwDestroyWindow;
 import static org.lwjgl.glfw.GLFW.glfwGetWindowSize;
@@ -40,12 +41,16 @@ public class Display {
 
 	private int width;
 	private int height;
-
+	private boolean fullscreen;
+	
 	public int getWidth() {
 		return width;
 	}
 	public int getHeight() {
 		return height;
+	}
+	public boolean isFullscreen() {
+		return fullscreen;
 	}
 
 	private boolean isInitialised = false;
@@ -54,9 +59,10 @@ public class Display {
 		return isInitialised;
 	}
 
-	public Display(int width, int height) {
+	public Display(int width, int height, boolean fullscreen) {
 		this.width = width;
 		this.height = height;
+		this.fullscreen = fullscreen;
 	}
 	
 	public void create() {
@@ -72,6 +78,9 @@ public class Display {
 		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 		glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
 		glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
+		if(fullscreen) {
+			glfwWindowHint(GLFW_DECORATED, GLFW_FALSE);
+		}
 
 		// Create window
 		window = glfwCreateWindow(width, height, "Creion", NULL, NULL);
@@ -93,7 +102,9 @@ public class Display {
 			MessageBus.getInstance().messageSystem(Recipients.RENDER_SYSTEM, RenderSystem.WINDOW_RESIZE);
 		});
 		
-		glfwSetWindowPos(window, 1, 20);
+		glfwSetWindowPos(window, 
+				fullscreen ? 0 : 80, 
+				fullscreen ? 0 : 30);
 		
 		GLFW.glfwMakeContextCurrent(window);
 		GL.createCapabilities();
