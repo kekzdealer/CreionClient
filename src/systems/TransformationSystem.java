@@ -70,10 +70,8 @@ public class TransformationSystem extends AbstractSystem {
 				break;
 			case SET:
 				super.entityDB.getTransformationComponent((int) args[0]).get().setTranslation(
-						//CMath.distanceUnitsToFloat((long) args[1]), 
-						//CMath.distanceUnitsToFloat((long) args[2]),
-						(float) args[1],
-						(float) args[2],
+						CMath.distanceUnitsToFloat((long) args[1]), 
+						CMath.distanceUnitsToFloat((long) args[2]),
 						0.0f); 
 				break;
 			default: Logger.ERROR.log("Transformation System doesn't recognize this behavior ID: " + message.getBehaviorID());

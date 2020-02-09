@@ -111,7 +111,7 @@ public class RenderSystem extends AbstractSystem {
 		}
 		
 		// TODO debug var
-		final boolean doRenderUI = false;
+		final boolean doRenderUI = true;
 		if(doRenderUI) {
 			// Render UI frame buffer texture from UIManager here later
 			gameShader.start();
@@ -121,7 +121,6 @@ public class RenderSystem extends AbstractSystem {
 			GL20.glEnableVertexAttribArray(1);
 			GL13.glActiveTexture(GL13.GL_TEXTURE0);
 			GL11.glBindTexture(GL11.GL_TEXTURE_2D, uiManager.getUITexture());
-			Logger.INFO.log("Rendering FBO textureID: " + uiManager.getUITexture());
 			gameShader.uploadTexture(0); // Same logic as above
 			gameShader.uploadTransformation(new Matrix4f().translate(-1.0f, -1.0f, 0.0f));
 			GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, uiManager.getUICarrier().getVertexCount());

@@ -5,6 +5,7 @@ import java.util.HashMap;
 import bus.Message;
 import bus.MessageBus;
 import bus.Recipients;
+import components.Cursor;
 import components.UIManager;
 import components.Window;
 import logic.EntityDatabase;
@@ -16,7 +17,7 @@ public class GUISystem extends AbstractSystem {
 	
 	private final UIManager uiManager;
 	
-	private final HashMap<Integer, Window> windows = new HashMap<>();
+	private final HashMap<Integer, components.Component> windows = new HashMap<>();
 	
 	public GUISystem(EntityDatabase entityDB, UIManager uiManager) {
 		super(entityDB);
@@ -31,12 +32,12 @@ public class GUISystem extends AbstractSystem {
 		uiManager.addComponent(characterInfo);
 		windows.put(TOGGLE_CHARACTER_INFO, characterInfo);
 		
-		final Window inventory = new Window();
-		inventory.setPosition(0.0f, 0.0f);
-		inventory.setSize(0.3f, 0.3f);
-		inventory.setBorderWidth(0.03f);
-		uiManager.addComponent(inventory);
-		windows.put(TOGGLE_INVENTORY, inventory);
+		final Cursor cursor = new Cursor();
+		cursor.setPosition(0.0f, 0.0f);
+		cursor.setSize(0.1f, 0.1f);
+		cursor.setVisible(true);
+		uiManager.addComponent(cursor);
+		windows.put(UPDATE_CURSOR_POSITION, cursor);
 	}
 
 	@Override
@@ -66,7 +67,9 @@ public class GUISystem extends AbstractSystem {
 			final Object[] args = message.getArgs();
 			switch(message.getBehaviorID()) {
 			case UPDATE_CURSOR_POSITION:
-				// TODO args: xpos ypos
+				windows.get(UPDATE_CURSOR_POSITION).setPosition(
+						(float) args[0], 
+						(float) args[1]);
 				break;
 			case TOGGLE_CHARACTER_INFO: 
 				if(windows.get(TOGGLE_CHARACTER_INFO).isVisible()) {

@@ -13,6 +13,7 @@ import bus.MessageBus;
 import bus.Recipients;
 import graphics.Display;
 import systems.EntitySystem;
+import systems.GUISystem;
 import systems.TransformationSystem;
 import utility.Logger;
 
@@ -78,7 +79,7 @@ public class InputMapper {
 		final Vector2fc cursorPos = input.pollCursorMoveDirection();
 		final long x = Math.round(cursorPos.x());
 		final long y = Math.round(cursorPos.y());
-		//messageBus.messageSystem(Recipients.TRANSFORMATION_SYSTEM, TransformationSystem.SET, 0, cursorPos.x(), cursorPos.y());
+		messageBus.messageSystem(Recipients.GUI_SYSTEM, GUISystem.UPDATE_CURSOR_POSITION, cursorPos.x(), cursorPos.y());
 		
 	}
 }
